@@ -38,19 +38,61 @@ li {
   margin-left: 0;
 }
 
-p {
+/* p {
   font-size: 16px;
   line-height: 1.5;
   color: #2b292d;
   letter-spacing: -0.01em;
+} */
+
+/* Header */
+.header-content {
+  display: flex;
+  justify-content: center;
+  padding: 30px 0;
+}
+
+/* SideBar */
+.side-bar-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 99;
+}
+
+.side-bar {
+  background-color: #fff;
+  border-right: 1px solid #333333;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: 0.4s ease;
+  height: 100%;
+  z-index: 99;
+}
+
+.side-bar-button {
+  position: fixed;
+  left: 15px;
+  top: 40px;
+  width: 25px;
+  height: 25px;
+  border: none;
+  background-color: #fff;
+  background-image: url('./images/bars-solid.svg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  cursor: pointer;
 }
 
 /* Modal */
 .modal-background {
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.1);
-  backdrop-filter: blur(2px);
+  background-color: rgba(0,0,0,0.03);
+  backdrop-filter: blur(1px);
   position: fixed;
   z-index: 100;
 }
@@ -58,12 +100,13 @@ p {
 .modal-content {
   position: relative;
   width: 300px;
-  background: white;
-  border-radius: 8px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.05), 0px 1px 3px 0px rgba(0, 0, 0, 0.10), 0px 1px 0px 0px rgba(255, 255, 255, 0.10) inset;
+  border-radius: 8px;
 }
 
 .modal-close {
@@ -77,9 +120,14 @@ p {
 /* >= 768px (Desktop) */
 @media screen and (min-width: 768px) {
   /* Reset CSS */
-  p {
+  /* p {
       font-size: 22px;
       line-height: 1.36363636;
+  } */
+
+  /* Header */
+  .header-content {
+    padding: 50px 0;
   }
 
   /* Modal */
