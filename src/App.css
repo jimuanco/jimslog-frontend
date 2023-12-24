@@ -61,10 +61,11 @@ li {
   z-index: 99;
 }
 
-.side-bar {
+.side-bar-content {
   background-color: #fff;
   border-right: 1px solid #333333;
   position: fixed;
+  padding: 15px;
   top: 0;
   left: 0;
   transition: 0.4s ease;
@@ -87,7 +88,57 @@ li {
   cursor: pointer;
 }
 
-/* Modal */
+/* Main */
+.main {
+  max-width: 768px;
+  margin: 0 auto;
+}
+
+.main-content {
+  padding: 0 10px 0 10px;
+}
+
+/* Menu */
+.main-menu-content h2 {
+  margin-bottom: 15px;
+}
+
+.login-button, .logout-button {
+  background-color: #fff;
+  border: 1px solid #333333;
+  border-radius: 3px;
+}
+
+/* Main Post */
+.main-post-title {
+  border: 1px solid #d3d3d3;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 3px;
+}
+
+.main-post-lists {
+  border: 1px solid #d3d3d3;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3px;
+}
+
+.write-post-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: 5px;
+  border: 1px solid #d3d3d3;
+  width: 80px;
+  height: 30px;
+}
+
+/* LoginModal */
 .modal-background {
   width: 100%;
   height: 100%;
@@ -117,8 +168,8 @@ li {
   cursor: pointer;
 }
 
-/* >= 768px (Desktop) */
-@media screen and (min-width: 768px) {
+/* >= 1024px (Desktop) */
+@media screen and (min-width: 1024px) {
   /* Reset CSS */
   /* p {
       font-size: 22px;
@@ -130,18 +181,38 @@ li {
     padding: 50px 0;
   }
 
-  /* Modal */
+  /* LoginModal */
   .modal-content {
     width: 380px;
+  }
+
+  /* Main */
+  .main {
+    display: flex;
+    max-width: 1020px;
+    margin: 0 auto;
+  }
+
+  .main-menu-pc {
+    flex-grow: 1;
+    padding: 15px;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
+  }
+
+  .main-content {
+    width: 768px;
+    margin-left: 10px;
+    padding: 0;
   }
   
 }
 
 /* Custom Grid System - Fix container width */
 @media screen and (min-width: 1200px) {
-  .container {
+  /* .main {
       max-width: 960px !important;
-  }
+  } */
 }
 
 /* .App {
