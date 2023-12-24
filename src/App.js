@@ -36,60 +36,53 @@ function App() {
   return (
     <div className="App">
       { modal && <LoginModal setModal={setModal} setAccessToken={setAccessToken} refresh={refresh} setUserRole={setUserRole} /> }
+      
       <header className="header">
-        <div className="container">
-          <div className="row">
-            <div className="col-12">
-              <div className="header-content">
-                <h1 className="header-title">
-                  Jimslog
-                </h1>
-              </div>
-            </div>
-          </div>
+        <div className="header-content">
+          <h1 className="header-title">
+            Jimslog
+          </h1>
         </div>
       </header>
+      
       <Mobile>
         <SideBar width={280}>
           <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} setUserRole={setUserRole} />
         </SideBar>
       </Mobile>
 
-      <div className="container">
-        <div className="row">
-          <div className="col-md-3">
-            <PC>
-              <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} setUserRole={setUserRole} />
-            </PC>
-          </div>
-
-          <div className="col-md-9">
-            <Routes>
-              <Route path="/" element={ <Home userRole={userRole} />} />
-              <Route path="/write" element={ userRole === "ADMIN" ? <Write accessToken={accessToken} /> : null } />
-              <Route path="/read/:postId" element={ <Read accessToken={accessToken} userRole={userRole} /> } />
-              <Route path="/edit/:postId" element={ <Edit accessToken={accessToken} /> } />
-              
-              <Route path="/signup" element={ <Signup /> } />
-            </Routes>
-          </div>
-        </div>
-      </div>
+      <main className="main">
+        <PC>
+          <nav className="main-menu-pc">
+            <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} setUserRole={setUserRole} />
+          </nav>
+        </PC>
+        <article className="main-content">
+          <Routes>
+            <Route path="/" element={ <Home userRole={userRole} />} />
+            <Route path="/write" element={ userRole === "ADMIN" ? <Write accessToken={accessToken} /> : null } />
+            <Route path="/read/:postId" element={ <Read accessToken={accessToken} userRole={userRole} /> } />
+            <Route path="/edit/:postId" element={ <Edit accessToken={accessToken} /> } />
+            
+            <Route path="/signup" element={ <Signup /> } />
+          </Routes>
+        </article>
+      </main>
     </div>
   );
 }
 
 const Menu = (props) => {
   return (
-    <div>
-      <Link to="/">Home</Link>
+    <div className="main-menu-content">
+        <h1><Link to="/">Home</Link></h1>
         <h2>전체글()</h2>
-        <div>
+        {/* <div>
           <h3>부모카테고리()</h3>
           <ul>
             <li>자식카테고리()</li>
           </ul>
-        </div>
+        </div> */}
         {props.isLoading ? null : props.accessToken == null ? <LoginBtn setModal={props.setModal} toggleMenu={props.toggleMenu} /> : <LogoutBtn setAccessToken={props.setAccessToken} setUserRole={props.setUserRole} />}
     </div>
   )
@@ -112,7 +105,7 @@ const SideBar = ({width, children}) => {
 
   return (
     <div className="side-bar-background" onClick={toggleMenu} style={{backgroundColor: isOpen && "rgba(255,255,255,0.5)", backdropFilter: isOpen && "blur(1px)", width: isOpen && "100%"}}>
-      <div className="side-bar" onClick={(e) => e.stopPropagation()} style={{ width: `${width}px`, transform: `translateX(${-xPosition}px)`}}>
+      <div className="side-bar-content" onClick={(e) => e.stopPropagation()} style={{ width: `${width}px`, transform: `translateX(${-xPosition}px)`}}>
         <div>{cloneElement(children, { toggleMenu: toggleMenu })}</div>
       </div>
       <button className="side-bar-button" onClick={toggleMenu}></button>
@@ -136,7 +129,7 @@ const LoginBtn = (props) => {
   </Mobile>
 
   return (
-    <button onClick={() => {
+    <button className="login-button" onClick={() => {
       toggleMenu && toggleMenu();
       props.setModal(true);
     }}>
@@ -147,7 +140,7 @@ const LoginBtn = (props) => {
 
 const LogoutBtn = (props) => {
   return (
-    <button onClick={() => {
+    <button className="logout-button" onClick={() => {
       logout(props.setUserRole);
       props.setAccessToken();
     }}>

@@ -14,8 +14,9 @@ const Home = (props) => {
   }, []);
 
   return (
-    <div>
-      <ul>
+    <div className="main-post">
+      <h3 className="main-post-title">전체글()</h3>
+      <ul className="main-post-lists">
           {posts.length > 0 && posts.map((post) => 
             <li key={post.id} >
               <div>
@@ -29,7 +30,7 @@ const Home = (props) => {
             </li>
           )}
       </ul>
-      { props.userRole === "ADMIN" && <Link to="write">글 작성</Link> }
+      { props.userRole === "ADMIN" && <Link className="write-post-button" to="write">글 작성</Link> }
     </div>
   )
 }
