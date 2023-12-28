@@ -1,3 +1,4 @@
+import MDEditor from "@uiw/react-md-editor";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
@@ -29,7 +30,9 @@ const Read = (props) => {
   return (
     <div>
       <h2>{post.title}</h2>
-      <div>{post.content}</div>
+      <div className="container">
+        <MDEditor.Markdown source={post.content} />
+      </div>
       {props.userRole === "ADMIN" && <button onClick={moveToEdit}>수정</button>}
       {props.userRole === "ADMIN" && <button onClick={deletePost}>삭제</button>}
     </div>

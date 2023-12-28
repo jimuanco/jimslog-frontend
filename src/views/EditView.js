@@ -1,3 +1,4 @@
+import MDEditor from "@uiw/react-md-editor";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
@@ -5,24 +6,20 @@ import { useNavigate, useParams } from "react-router-dom"
 const Edit = (props) => {
 
   const {postId} = useParams();
-  const [post, setPost] = useState([]);
-  const title = useRef("");
-  const content = useRef("");
+  const [post, setPost] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`/api/posts/${postId}`)
       .then((response) => {
-        title.current = response.data.data.title;
-        content.current = response.data.data.content;
         setPost(response.data.data);
       });
   },[]);
 
   const edit = () => {
     axios.patch(`/api/posts/${postId}`, {
-      title: title.current,
-      content: content.current
+      title: post.title,
+      content: post.content
     }, {headers: {Authorization: `Bearer ${props.accessToken}`}})
       .then(() => {
         navigate("/", {replace: true});
@@ -32,12 +29,17 @@ const Edit = (props) => {
   return (
     <div>
       <div>
-        <input type="text" defaultValue={post.title} onInput={(e) => {title.current = e.target.value}} />
+        <input type="text" defaultValue={post.title} onInput={e => setPost({...post, title: e.target.value})} />
       </div>
 
-      <div>
-        <textarea rows="15" defaultValue={post.content} onInput={(e) => {content.current = e.target.value}} />
-      </div>
+      <MDEditor
+        value={post.content}
+        onChange={e => setPost({...post, content: e})}
+        previewOptions={{
+          allowedElements: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'a', 'span', 'br', 'ul', 'ol', 'li', 'strong' ,'hr', 'em', 'del', 'table', 'thead', 'th', 'tbody', 'tr', 'td', 'blockquote', 'code', 'pre', 'input'],
+        }}
+        preview={props.isPcScreen ? "live" : "edit"}
+      />
 
       <button onClick={edit}>수정완료</button>
     </div>

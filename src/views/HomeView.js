@@ -10,12 +10,13 @@ const Home = (props) => {
     axios.get("/api/posts?page=1&size=5")
       .then((response) => {
         setPosts(response.data.data);
+        props.setCountPosts(response.data.data.length);
       });
   }, []);
 
   return (
     <div className="main-post">
-      <h3 className="main-post-title">전체글()</h3>
+      <h3 className="main-post-title">전체글({props.countPosts})</h3>
       <ul className="main-post-lists">
           {posts.length > 0 && posts.map((post) => 
             <li key={post.id} >

@@ -30,14 +30,6 @@ textarea:active {
   box-shadow: none;
 }
 
-ul,
-ol,
-li {
-  list-style-type: none;
-  padding-left: 0;
-  margin-left: 0;
-}
-
 /* p {
   font-size: 16px;
   line-height: 1.5;
@@ -90,7 +82,7 @@ li {
 
 /* Main */
 .main {
-  max-width: 768px;
+  max-width: 788px;
   margin: 0 auto;
 }
 
@@ -189,6 +181,7 @@ li {
   /* Main */
   .main {
     display: flex;
+    justify-content: center;
     max-width: 1020px;
     margin: 0 auto;
   }
