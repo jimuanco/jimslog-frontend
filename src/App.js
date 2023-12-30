@@ -29,7 +29,7 @@ function App() {
   const mainStylesForPcWritePage = {
     width: isWritePageOnPc && '96%',
     maxWidth: isWritePageOnPc && '1536px',
-    marginTop: isWritePageOnPc && '50px',
+    // marginTop: isWritePageOnPc && '50px',
   };
 
   const mainContentStylesForPcWritePage = {
