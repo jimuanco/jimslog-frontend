@@ -11,6 +11,7 @@ const Write = (props) => {
   const [post, setPost] = useState({post:"", content:""});
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+  const cursorPosition = useRef(0);
 
   const write = () => {
     axios.post("/api/posts", {
@@ -28,7 +29,9 @@ const Write = (props) => {
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       // setSavedImg(reader.result);
-      setPost({...post, content: post.content + `\n![image](https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=2022111116425800738539a63f16412114122486.jpg&nmt=18)\n`});
+      const contentBeforeCursor = post.content.substring(0, cursorPosition.current);
+      const contentAfterCursor = post.content.substring(cursorPosition.current);
+      setPost({...post, content: contentBeforeCursor + `\n![image](https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=2022111116425800738539a63f16412114122486.jpg&nmt=18)\n` + contentAfterCursor});
     }
     fileInputRef.current.value = null;
   }
@@ -49,9 +52,15 @@ const Write = (props) => {
       </svg>
     ),
     execute: async (state, api) => {
+      cursorPosition.current = document.querySelector(".w-md-editor-text-input").selectionStart;
       fileInputRef.current.click();
     },
   };
+
+  const handlePreviewScroll = () => {
+    const previewBox = document.querySelector(".w-md-editor-preview");
+    previewBox.scrollTop = previewBox.scrollHeight;
+  }
 
   return (
     <div className="write-view">
@@ -60,7 +69,7 @@ const Write = (props) => {
           if (e.key === "Enter") {
             e.preventDefault();
           }
-        }}/>
+        }} />
         <PC>
           <div className="write-render-title">
             {post.title}
@@ -70,7 +79,10 @@ const Write = (props) => {
       <div className="write-view-content">
         <MDEditor
           value={post.content}
-          onChange={e => setPost({...post, content: e})}
+          onChange={e => {
+            setPost({...post, content: e});
+            handlePreviewScroll();
+          }}
           previewOptions={{
             allowedElements: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'a', 'span', 'br', 'ul', 'ol', 'li', 'strong' ,'hr', 'em', 'del', 'table', 'thead', 'th', 'tbody', 'tr', 'td', 'blockquote', 'code', 'pre', 'img'],
           }}
