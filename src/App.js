@@ -101,6 +101,16 @@ function App() {
           </Routes>
         </article>
       </main>
+      {
+        !isWritePage && 
+        <footer className="footer">
+          <div className="footer-content">
+            <strong className="copyright">
+              © jimuanco
+            </strong>
+          </div>
+        </footer>
+      }
     </div>
   );
 }

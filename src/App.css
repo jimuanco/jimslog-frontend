@@ -94,6 +94,23 @@ textarea:active {
   padding: 0 10px 0 10px;
 }
 
+.footer {
+  padding: 10px;
+}
+
+.footer .footer-content{
+  display: flex;
+  justify-content: center;
+  border: 1px solid #d3d3d3;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.footer-content .copyright {
+  font-weight: 400;
+  font-size: 14px;
+}
+
 /* Menu */
 .main-menu-content h1 {
   margin-bottom: 15px;
@@ -351,6 +368,11 @@ body .w-md-editor-text-input {
     padding: 0;
   }
 
+  .footer {
+    margin: 0 auto;
+    max-width: 1040px;
+  }
+
   /* HomeView */
   .main-post-card {
     display: flex;
@@ -366,7 +388,11 @@ body .w-md-editor-text-input {
 
   .main-post-card .main-post-text {
     flex: 0 1 76%;
-    height: 140px;
+    height: 135px;
+  }
+
+  .main-post-text .post-content {
+    font-size: 15px;
   }
 
   /* WriteView */
