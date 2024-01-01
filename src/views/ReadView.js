@@ -1,3 +1,4 @@
+import MDEditor from "@uiw/react-md-editor";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
@@ -15,6 +16,10 @@ const Read = (props) => {
       });
   }, []);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const moveToEdit = () => {
     navigate(`/edit/${postId}`);
   }
@@ -27,11 +32,19 @@ const Read = (props) => {
   }
 
   return (
-    <div>
-      <h2>{post.title}</h2>
-      <div>{post.content}</div>
-      {props.userRole === "ADMIN" && <button onClick={moveToEdit}>수정</button>}
-      {props.userRole === "ADMIN" && <button onClick={deletePost}>삭제</button>}
+    <div className="read-view">
+      <h1>{post.title}</h1>
+      <div className="read-view-info">
+        <strong className="writer">Jim</strong>
+        <span className="post-date">2024-01-01</span>
+        <div className="read-view-buttons">
+          {props.userRole === "ADMIN" && <button className="edit-button" type="button" onClick={moveToEdit}>수정</button>}
+          {props.userRole === "ADMIN" && <button className="delete-button" type="button" onClick={deletePost}>삭제</button>}
+        </div>
+      </div>
+      <div>
+        <MDEditor.Markdown source={post.content} />
+      </div>
     </div>
   )
 }
