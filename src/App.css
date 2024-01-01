@@ -101,7 +101,15 @@ textarea:active {
   border-radius: 3px;
 }
 
-/* Main Post */
+/* HomeView */
+.main-post ul,
+.main-post ol,
+.main-post li {
+  list-style-type: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
 .main-post-title {
   border: 1px solid #d3d3d3;
   border-radius: 5px;
@@ -116,6 +124,48 @@ textarea:active {
   flex-direction: column;
   align-items: center;
   margin-bottom: 3px;
+  padding: 10px !important;
+}
+
+.main-post-lists li:not(:last-of-type) {
+  border-bottom: 1px solid #d3d3d3;
+}
+
+.main-post-lists li {
+  width: 100%;
+  padding: 15px 0;
+}
+
+.main-post-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  cursor: pointer;
+}
+
+.main-post-card .thumbnail{
+  position: relative;
+  width: 100%;
+  padding-top: 66.67%
+}
+
+.main-post-card .main-post-text{
+  /* height: 140px; */
+  overflow: hidden;
+}
+
+.main-post-text .post-title h3 {
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.main-post-text .post-content {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
 }
 
 .write-post-button {
@@ -238,10 +288,10 @@ body .w-md-editor-text-input {
     display: flex;
     justify-content: center;
     max-width: 1020px;
-    margin: 0 auto;
   }
 
   .main-menu-pc {
+    min-height: 1400px;
     flex-grow: 1;
     padding: 15px;
     border: 1px solid #d3d3d3;
@@ -252,6 +302,24 @@ body .w-md-editor-text-input {
     width: 768px;
     margin-left: 10px;
     padding: 0;
+  }
+
+  /* HomeView */
+  .main-post-card {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .main-post-card .thumbnail{
+    flex: 0 0 24%;
+    padding-top: 18%;
+    height: 0;
+    margin-right: 20px;
+  }
+
+  .main-post-card .main-post-text {
+    flex: 0 1 76%;
+    height: 140px;
   }
 
   /* WriteView */

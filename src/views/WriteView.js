@@ -59,7 +59,7 @@ const Write = (props) => {
 
   const handlePreviewScroll = () => {
     const previewBox = document.querySelector(".w-md-editor-preview");
-    previewBox.scrollTop = previewBox.scrollHeight;
+    previewBox && (previewBox.scrollTop = previewBox.scrollHeight);
   }
 
   return (
