@@ -48,7 +48,7 @@ const Home = (props) => {
                     <h3 ref={(el) => postTitleRefs.current[index] = el}>{post.title}</h3>
                   </div>
                   <p className="post-content">
-                    {post.content.replace(/\!\[(.*?)\]\((.*?)\)/g, '')}
+                    {post.content.replace(/\!\[(.*?)\]\((.*?)\)/g, '').replace(/<span[^>]*>(.*?)<\/span>/g, '$1')}
                   </p>
                 </div>
               </div>

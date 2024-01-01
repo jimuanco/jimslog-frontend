@@ -1,4 +1,4 @@
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
 import Home from './views/HomeView';
 import Write from './views/WriteView';
@@ -15,6 +15,7 @@ function App() {
 
   const JWT_EXPIRY_TIME = 30 * 60 * 1000;
 
+  const navigate = useNavigate();
   const [modal, setModal] = useState(false);
   const [accessToken, setAccessToken] = useState();
   const [userRole, setUserRole] = useState();
@@ -69,7 +70,7 @@ function App() {
       
       <header className="header" style={{display: isWritePage && "none"}}>
         <div className="header-content">
-          <h1 className="header-title">
+          <h1 className="header-title" onClick={() => navigate("/")}>
             Jimslog
           </h1>
         </div>
@@ -107,8 +108,8 @@ function App() {
 const Menu = (props) => {
   return (
     <div className="main-menu-content">
-        <h1><Link to="/">Home</Link></h1>
-        <h2>전체글({props.countPosts})</h2>
+        {/* <h1><Link to="/">Home</Link></h1> */}
+        <h1>전체보기({props.countPosts})</h1>
         {/* <div>
           <h3>부모카테고리()</h3>
           <ul>
