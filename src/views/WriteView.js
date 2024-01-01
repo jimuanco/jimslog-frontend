@@ -28,7 +28,6 @@ const Write = (props) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      // setSavedImg(reader.result);
       const contentBeforeCursor = post.content.substring(0, cursorPosition.current);
       const contentAfterCursor = post.content.substring(cursorPosition.current);
       setPost({...post, content: contentBeforeCursor + `\n![image](https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=2022111116425800738539a63f16412114122486.jpg&nmt=18)\n` + contentAfterCursor});

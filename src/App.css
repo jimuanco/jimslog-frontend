@@ -4,7 +4,7 @@
 }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 /* Reset CSS */
@@ -16,7 +16,7 @@ a {
 button,
 input,
 textarea {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   font-size: 16px;
 }
 
