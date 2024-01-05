@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react"
+import Pagination from "react-js-pagination";
 import { Link, useNavigate } from "react-router-dom";
 
 const Home = (props) => {
@@ -7,6 +8,12 @@ const Home = (props) => {
   const navigate = useNavigate();
   const postTitleRefs = useRef([]);
   let matchThumbnail;
+
+  const[page, setPage] = useState(1);
+
+  const handlePageChange = (page) => {
+    setPage(page);
+  }
 
   useEffect(() => {
     axios.get("/api/posts?page=1&size=5")
@@ -56,6 +63,15 @@ const Home = (props) => {
           )}
       </ul>
       { props.userRole === "ADMIN" && <Link className="write-post-button" to="write">글 작성</Link> }
+      <Pagination
+        activePage={page}
+        itemsCountperPage={5}
+        totalItemsCount={20}
+        pageRangeDisplayed={5}
+        prevPageText={"<"}
+        nextPageText={">"}
+        onChange={handlePageChange}
+      />
     </div>
   )
 }
