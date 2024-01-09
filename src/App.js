@@ -9,6 +9,7 @@ import { cloneElement, useEffect, useState } from 'react';
 import axios from 'axios';
 import LoginModal from './components/LoginModal';
 import { Mobile, PC } from './components/ResponsiveConfig';
+import MenuChnage from './views/MenuChangeView';
 
 function App() {
   console.log("렌더링됐어용")
@@ -27,6 +28,8 @@ function App() {
 
   const [countPosts, setCountPosts] = useState();
 
+  const [menus, setMenus] = useState([]);
+
   const mainStylesForPcWritePage = {
     width: isWritePageOnPc && '96%',
     maxWidth: isWritePageOnPc && '1536px',
@@ -37,6 +40,10 @@ function App() {
     width: isWritePageOnPc && '100%',
     marginLeft: isWritePageOnPc  && '0',
   };
+
+  useEffect(() => {
+    fetchMenus()
+  }, [location.pathname]);
 
   useEffect(() => {
     refresh();
@@ -54,6 +61,14 @@ function App() {
     };
   }, []);
 
+  const fetchMenus = () => {
+    axios.get("/api/menus")
+      .then((response) => {
+        setMenus(response.data.data);
+        console.log(response.data.data);
+      });
+  }
+
   const refresh = () => {
     axios.post("/api/auth/refresh")
       .then((response) => {
@@ -70,7 +85,11 @@ function App() {
       
       <header className="header" style={{display: isWritePage && "none"}}>
         <div className="header-content">
-          <h1 className="header-title" onClick={() => navigate("/")}>
+          <h1 className="header-title" onClick={() => {
+            location.pathname == "/" ? navigate("/", {replace: true}) : navigate("/");
+            fetchMenus();
+          }
+          }>
             Jimslog
           </h1>
         </div>
@@ -78,7 +97,7 @@ function App() {
       
       <Mobile>
         <SideBar width={280} isWritePage={isWritePage}>
-          <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} setUserRole={setUserRole} countPosts={countPosts} />
+          <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} setUserRole={setUserRole} countPosts={countPosts} menus={menus} navigate={navigate} location={location} />
         </SideBar>
       </Mobile>
 
@@ -86,7 +105,7 @@ function App() {
         {!isWritePage && 
           <PC>
             <nav className="main-menu-pc">
-              <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} setUserRole={setUserRole} countPosts={countPosts} />
+              <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} setUserRole={setUserRole} countPosts={countPosts} menus={menus} navigate={navigate} location={location} />
             </nav>
           </PC>
         }
@@ -96,6 +115,7 @@ function App() {
             <Route path="/write" element={ userRole === "ADMIN" ? <Write accessToken={accessToken} isPcScreen={isPcScreen} /> : null } />
             <Route path="/read/:postId" element={ <Read accessToken={accessToken} userRole={userRole} /> } />
             <Route path="/edit/:postId" element={ <Edit accessToken={accessToken} isPcScreen={isPcScreen} /> } />
+            <Route path="/menu-change" element={ <MenuChnage menus={menus} /> } />
             
             <Route path="/signup" element={ <Signup /> } />
           </Routes>
@@ -118,15 +138,28 @@ function App() {
 const Menu = (props) => {
   return (
     <div className="main-menu-content">
-        {/* <h1><Link to="/">Home</Link></h1> */}
-        <h1>전체보기({props.countPosts})</h1>
-        {/* <div>
-          <h3>부모카테고리()</h3>
-          <ul>
-            <li>자식카테고리()</li>
-          </ul>
-        </div> */}
-        {props.isLoading ? null : props.accessToken == null ? <LoginBtn setModal={props.setModal} toggleMenu={props.toggleMenu} /> : <LogoutBtn setAccessToken={props.setAccessToken} setUserRole={props.setUserRole} />}
+      <h1>전체보기({props.countPosts})</h1>
+      <div className="main-menu-lists">
+        {props.menus.length > 0 && props.menus.map((menu, index) => 
+          <div className="main-menu-item" key={index}>
+            <h2>{menu.name}</h2>
+            <div className="sub-menu-lists">
+              <ul>
+                {
+                  menu.children.length > 0 &&
+                  menu.children.map((subMenu, index) => 
+                    <li key={index}>{subMenu.name}</li>
+                  )
+                }
+              </ul>
+            </div>
+          </div>
+        )}
+      </div>
+      <button type="button" className="new-menu-button" onClick={() => {
+        props.location.pathname == "/menu-change" ? props.navigate("/menu-change", {replace: true}) : props.navigate("/menu-change");
+      }}>+</button>
+      {props.isLoading ? null : props.accessToken == null ? <LoginBtn setModal={props.setModal} toggleMenu={props.toggleMenu} /> : <LogoutBtn setAccessToken={props.setAccessToken} setUserRole={props.setUserRole} />}
     </div>
   )
 }

@@ -112,14 +112,68 @@ textarea:active {
 }
 
 /* Menu */
+.main-menu-content ul,
+.main-menu-content ol,
+.main-menu-content li {
+  list-style-type: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
 .main-menu-content h1 {
   margin-bottom: 15px;
+}
+
+.main-menu-lists {
+  margin-bottom: 10px;
+}
+
+.main-menu-lists .main-menu-item h2 {
+  font-size: 20px;
+}
+
+.main-menu-item .sub-menu-lists {
+  padding-left: 10px;
+}
+
+.main-menu-content .new-menu-button {
+  display: block;
+  background-color: #fff;
+  border: 1px solid #333333;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .login-button, .logout-button {
   background-color: #fff;
   border: 1px solid #333333;
   border-radius: 3px;
+}
+
+/* MenuChangeView */
+.menu-change-content ul,
+.menu-change-content ol,
+.menu-change-content li {
+  list-style-type: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.menu-change-content {
+  padding: 20px;
+}
+
+.menu-change-lists {
+  margin-bottom: 10px;
+}
+
+.menu-change-lists .menu-change-item h2 {
+  font-size: 20px;
+}
+
+.menu-change-item .sub-change-lists {
+  padding-left: 10px;
 }
 
 /* HomeView */
@@ -235,7 +289,7 @@ textarea:active {
 .write-view {
   height: 100dvh;
   padding: 30px 0 10px 0;
-  display:flex;
+  display: flex;
   flex-direction: column;
 }
 
