@@ -44,7 +44,7 @@ const MenuChnage = (props) => {
     setSubMenuInput(0);
     if(clickedSubMenu[0] === subListOrder && clickedSubMenu[1] === 0) {
       setClickedSubMenu([subListOrder, 1]);
-    } else if(clickedSubMenu[0] === subListOrder && clickedSubMenu[1] === 1) {
+    } else if(clickedSubMenu[0] === subListOrder && clickedSubMenu[1] === 1 && clickedMainMenu[0] === mainListOrder) {
       setClickedSubMenu([subListOrder, 2]);
     } else {
       setClickedSubMenu([subListOrder, 1]);
@@ -81,10 +81,6 @@ const MenuChnage = (props) => {
   }
 
   const changeMenus = () => {
-    console.log(inputText.current)
-    console.log(mainMenuInput)
-    console.log(subMenuInput)
-
     if(mainMenuInput === 0 && subMenuInput === 0 && inputText.current !== "" && (clickedMainMenu[1] === 2 || clickedSubMenu[1] === 2)) {
       setNewMenus(prevMenus => {
         const changedMenus = [...prevMenus];
@@ -211,9 +207,25 @@ const MenuChnage = (props) => {
     }
   }
 
-  console.log(clickedMainMenu)
-  console.log(clickedSubMenu)
-  console.log(newMenus)
+  const cancelChanges = () => {
+    const deepCopyMenu = (menu) => {
+      return {
+        ...menu,
+        children: menu.children ? menu.children.map(deepCopyMenu) : []
+      };
+    };
+    
+    const copiedMenus = props.menus.map((menu) => {
+      return {
+        ...deepCopyMenu(menu)
+      };
+    });
+    setNewMenus(copiedMenus);
+    setClickedMainMenu([0, 0]);
+    setClickedSubMenu([0, 0]);
+    setMainMenuInput(0);
+    setSubMenuInput(0);
+  }
   
   return (
     <div className="menu-change-content">
@@ -245,20 +257,22 @@ const MenuChnage = (props) => {
         )}
         {
           mainMenuInput === "new" &&
-          <input type="text" onChange={(e) => {inputText.current = e.target.value}} />
+          <input type="text" onChange={(e) => {inputText.current = e.target.value}} onKeyDown={(e) => {e.key === "Enter" && changeMenus()}} />
         }
       </div>
-      <div>
-        <button type="button" onClick={() => addMainInput()}>+</button>
-        <button type="button" onClick={() => addSubInput()}>+</button>
-        <button type="button" onClick={() => changeMenus()}>✓</button>
-        <button type="button" onClick={() => handleMoveUp()}>↑</button>
-        <button type="button" onClick={() => handleMoveDown()}>↓</button>
-        <button type="button" onClick={() => deleteMenu()}>✕</button>
-      </div>
-      <div>
-        <button type="button" onClick={() => fetchChangeMenus()}>적용</button>
-        <button type="button" onClick={() => alert("나갈래?")}>취소</button>
+      <div className="button-group">
+        <div className="menu-controll-buttons">
+          <button className="main-add-button" type="button" onClick={() => addMainInput()}>+</button>
+          <button className="sub-add-button" type="button" onClick={() => addSubInput()}>+</button>
+          <button type="button" onClick={() => changeMenus()}>✓</button>
+          <button type="button" onClick={() => handleMoveUp()}>↑</button>
+          <button type="button" onClick={() => handleMoveDown()}>↓</button>
+          <button type="button" onClick={() => deleteMenu()}>✕</button>
+        </div>
+        <div className="action-buttons">
+          <button type="button" onClick={() => fetchChangeMenus()}>적용</button>
+          <button type="button" onClick={() => cancelChanges()}>취소</button>
+        </div>
       </div>
     </div>
   ) 

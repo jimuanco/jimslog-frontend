@@ -136,6 +136,12 @@ function App() {
 }
 
 const Menu = (props) => {
+  let toggleMenu;
+
+  <Mobile>
+    {toggleMenu = props.toggleMenu}
+  </Mobile>
+
   return (
     <div className="main-menu-content">
       <h1>전체보기({props.countPosts})</h1>
@@ -158,8 +164,9 @@ const Menu = (props) => {
       </div>
       <button type="button" className="new-menu-button" onClick={() => {
         props.location.pathname == "/menu-change" ? props.navigate("/menu-change", {replace: true}) : props.navigate("/menu-change");
-      }}>+</button>
-      {props.isLoading ? null : props.accessToken == null ? <LoginBtn setModal={props.setModal} toggleMenu={props.toggleMenu} /> : <LogoutBtn setAccessToken={props.setAccessToken} setUserRole={props.setUserRole} />}
+        toggleMenu && toggleMenu();
+      }}>NEW</button>
+      {props.isLoading ? null : props.accessToken == null ? <LoginBtn setModal={props.setModal} toggleMenu={toggleMenu} /> : <LogoutBtn setAccessToken={props.setAccessToken} setUserRole={props.setUserRole} />}
     </div>
   )
 }
@@ -196,16 +203,9 @@ const logout = (setUserRole) => {
 }
 
 const LoginBtn = (props) => {
-
-  let toggleMenu;
-
-  <Mobile>
-    {toggleMenu = props.toggleMenu}
-  </Mobile>
-
   return (
     <button className="login-button" onClick={() => {
-      toggleMenu && toggleMenu();
+      props.toggleMenu && props.toggleMenu();
       props.setModal(true);
     }}>
       로그인
