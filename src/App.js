@@ -5,7 +5,7 @@ import Write from './views/WriteView';
 import Read from './views/ReadView';
 import Edit from './views/EditView';
 import Signup from './views/SignupView';
-import { cloneElement, useEffect, useState } from 'react';
+import { cloneElement, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import LoginModal from './components/LoginModal';
 import { Mobile, PC } from './components/ResponsiveConfig';
@@ -137,24 +137,54 @@ function App() {
 
 const Menu = (props) => {
   let toggleMenu;
-
   <Mobile>
     {toggleMenu = props.toggleMenu}
   </Mobile>
 
+  const entireListMenu = useRef();
+  const menuTitleRefs = useRef([]);
+
+  const addEffectToEntireListMenu = () => {
+    entireListMenu.current.style.textDecoration = "underline";
+    entireListMenu.current.style.fontWeight = "700";
+  }
+
+  const deleteEffectToEntireListMenu = () => {
+    entireListMenu.current.style.textDecoration = "none";
+    entireListMenu.current.style.fontWeight = "400";
+  }
+
+  const addEffectToMainMenu = (mainIndex) => {
+    menuTitleRefs.current[mainIndex].main.style.textDecoration = "underline";
+    menuTitleRefs.current[mainIndex].main.style.fontWeight = "700";
+  }
+
+  const deleteEffectToMainMenu = (mainIndex) => {
+    menuTitleRefs.current[mainIndex].main.style.textDecoration = "none";
+    menuTitleRefs.current[mainIndex].main.style.fontWeight = "400";
+  }
+
+  const addEffectToSubMenu = (mainIndex, subIndex) => {
+    menuTitleRefs.current[mainIndex].sub[subIndex].style.fontWeight = "700";
+  }
+
+  const deleteEffectToSubMenu = (mainIndex, subIndex) => {
+    menuTitleRefs.current[mainIndex].sub[subIndex].style.fontWeight = "400";
+  }
+
   return (
     <div className="main-menu-content">
-      <h1>전체보기({props.countPosts})</h1>
+      <h1 ref={entireListMenu} onMouseOver={() => addEffectToEntireListMenu()} onMouseOut={() => deleteEffectToEntireListMenu()} >전체보기({props.countPosts})</h1>
       <div className="main-menu-lists">
-        {props.menus.length > 0 && props.menus.map((menu, index) => 
-          <div className="main-menu-item" key={index}>
-            <h2>{menu.name}</h2>
+        {props.menus.length > 0 && props.menus.map((menu, mainIndex) => 
+          <div className="main-menu-item" key={mainIndex}>
+            <h2 ref={(el) => menuTitleRefs.current.push({main: el, sub: []})} onMouseOver={() => addEffectToMainMenu(mainIndex)} onMouseOut={() => deleteEffectToMainMenu(mainIndex)}>{menu.name}</h2>
             <div className="sub-menu-lists">
               <ul>
                 {
                   menu.children.length > 0 &&
-                  menu.children.map((subMenu, index) => 
-                    <li key={index}>{subMenu.name}</li>
+                  menu.children.map((subMenu, subIndex) => 
+                    <li ref={(el) => menuTitleRefs.current[mainIndex].sub.push(el)} key={subIndex} onMouseOver={() => addEffectToSubMenu(mainIndex, subIndex)} onMouseOut={() => deleteEffectToSubMenu(mainIndex, subIndex)}>{subMenu.name}</li>
                   )
                 }
               </ul>

@@ -124,17 +124,24 @@ textarea:active {
 }
 
 .main-menu-content h1 {
-  cursor: pointer;
+  font-size: 18px;
+  font-weight: 400;
   margin-bottom: 15px;
+  cursor: pointer;
 }
 
 .main-menu-lists {
   margin-bottom: 10px;
 }
 
+.main-menu-lists .main-menu-item:not(:last-of-type) {
+  margin-bottom: 5px;
+}
+
 .main-menu-lists .main-menu-item h2 {
+  font-size: 18px;
+  font-weight: 400;
   cursor: pointer;
-  font-size: 20px;
 }
 
 .main-menu-item .sub-menu-lists {
@@ -179,8 +186,13 @@ textarea:active {
   margin-bottom: 10px;
 }
 
+.menu-change-lists .menu-change-item:not(:last-of-type) {
+  margin-bottom: 5px;
+}
+
 .menu-change-lists .menu-change-item h2 {
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: 400;
   cursor: pointer;
 }
 

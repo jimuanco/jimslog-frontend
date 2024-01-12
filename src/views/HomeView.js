@@ -27,7 +27,7 @@ const Home = (props) => {
     postTitleRefs.current[index].style.textDecoration = "underline";
   }
 
-  const deleteUnderlineTotile = (index) => {
+  const deleteUnderlineToTiTle = (index) => {
     postTitleRefs.current[index].style.textDecoration = "none";
   }
 
@@ -39,7 +39,7 @@ const Home = (props) => {
             <li key={post.id}>
               <div className="main-post-card" onClick={() => {
                 navigate(`/read/${post.id}`);
-              }} onMouseOver={() => addUnderlineToTitle(index)} onMouseOut={() => deleteUnderlineTotile(index)}>
+              }} onMouseOver={() => addUnderlineToTitle(index)} onMouseOut={() => deleteUnderlineToTiTle(index)}>
                 <div className="thumbnail">
                   {
                     (() => {
