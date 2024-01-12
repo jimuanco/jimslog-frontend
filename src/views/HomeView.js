@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react"
 import Pagination from "react-js-pagination";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 const Home = (props) => {
+  const {mainMenuId, subMenuId} = useParams();
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
   const postTitleRefs = useRef([]);
@@ -14,14 +15,21 @@ const Home = (props) => {
   const handlePageChange = (page) => {
     setPage(page);
   }
+  
+  const location = useLocation();
 
   useEffect(() => {
-    axios.get("/api/posts?page=1&size=5")
+    let menuId = 0;
+    if(subMenuId !== undefined) {
+      menuId = subMenuId;
+    } else if(mainMenuId !== undefined) {
+      menuId = mainMenuId;
+    }
+    axios.get(`/api/posts?page=1&size=5&menu=${menuId}`)
       .then((response) => {
         setPosts(response.data.data);
-        props.setCountPosts(response.data.data.length);
       });
-  }, []);
+  }, [location.key]);
 
   const addUnderlineToTitle = (index) => {
     postTitleRefs.current[index].style.textDecoration = "underline";
@@ -33,7 +41,7 @@ const Home = (props) => {
 
   return (
     <div className="main-post">
-      <h3 className="main-post-title">전체글({props.countPosts})</h3>
+      <h3 className="main-post-title">전체글()</h3>
       <ul className="main-post-lists">
           {posts.length > 0 && posts.map((post, index) => 
             <li key={post.id}>

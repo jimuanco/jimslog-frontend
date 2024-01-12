@@ -26,8 +26,6 @@ function App() {
   const isWritePage = location.pathname === '/write' || location.pathname.startsWith('/edit/');
   const isWritePageOnPc = isPcScreen && isWritePage;
 
-  const [countPosts, setCountPosts] = useState();
-
   const [menus, setMenus] = useState([]);
 
   const mainStylesForPcWritePage = {
@@ -97,7 +95,7 @@ function App() {
       
       <Mobile>
         <SideBar width={280} isWritePage={isWritePage}>
-          <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} setUserRole={setUserRole} countPosts={countPosts} menus={menus} navigate={navigate} location={location} />
+          <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} setUserRole={setUserRole} menus={menus} navigate={navigate} location={location} />
         </SideBar>
       </Mobile>
 
@@ -105,13 +103,14 @@ function App() {
         {!isWritePage && 
           <PC>
             <nav className="main-menu-pc">
-              <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} setUserRole={setUserRole} countPosts={countPosts} menus={menus} navigate={navigate} location={location} />
+              <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} setUserRole={setUserRole} menus={menus} navigate={navigate} location={location} />
             </nav>
           </PC>
         }
         <article className="main-content" style={mainContentStylesForPcWritePage}>
           <Routes>
-            <Route path="/" element={ <Home userRole={userRole} countPosts={countPosts} setCountPosts={setCountPosts} />} />
+            <Route path="/" element={ <Home userRole={userRole} />} />
+            <Route path="/menu/:mainMenuId/:subMenuId?" element={ <Home userRole={userRole} />} />
             <Route path="/write" element={ userRole === "ADMIN" ? <Write accessToken={accessToken} isPcScreen={isPcScreen} /> : null } />
             <Route path="/read/:postId" element={ <Read accessToken={accessToken} userRole={userRole} /> } />
             <Route path="/edit/:postId" element={ <Edit accessToken={accessToken} isPcScreen={isPcScreen} /> } />
@@ -136,6 +135,9 @@ function App() {
 }
 
 const Menu = (props) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   let toggleMenu;
   <Mobile>
     {toggleMenu = props.toggleMenu}
@@ -174,17 +176,23 @@ const Menu = (props) => {
 
   return (
     <div className="main-menu-content">
-      <h1 ref={entireListMenu} onMouseOver={() => addEffectToEntireListMenu()} onMouseOut={() => deleteEffectToEntireListMenu()} >전체보기({props.countPosts})</h1>
+      <h1 ref={entireListMenu} onMouseOver={() => addEffectToEntireListMenu()} onMouseOut={() => deleteEffectToEntireListMenu()} onClick={() => {
+        location.pathname == "/" ? navigate("/", {replace: true}) : navigate("/");
+      }}>전체보기()</h1>
       <div className="main-menu-lists">
         {props.menus.length > 0 && props.menus.map((menu, mainIndex) => 
           <div className="main-menu-item" key={mainIndex}>
-            <h2 ref={(el) => menuTitleRefs.current.push({main: el, sub: []})} onMouseOver={() => addEffectToMainMenu(mainIndex)} onMouseOut={() => deleteEffectToMainMenu(mainIndex)}>{menu.name}</h2>
+            <h2 ref={(el) => menuTitleRefs.current.push({main: el, sub: []})} onMouseOver={() => addEffectToMainMenu(mainIndex)} onMouseOut={() => deleteEffectToMainMenu(mainIndex)} onClick={() => {
+              location.pathname == `/menu/${menu.id}` ? navigate(`/menu/${menu.id}`, {replace: true}) : navigate(`/menu/${menu.id}`);
+            }}>{menu.name}</h2>
             <div className="sub-menu-lists">
               <ul>
                 {
                   menu.children.length > 0 &&
                   menu.children.map((subMenu, subIndex) => 
-                    <li ref={(el) => menuTitleRefs.current[mainIndex].sub.push(el)} key={subIndex} onMouseOver={() => addEffectToSubMenu(mainIndex, subIndex)} onMouseOut={() => deleteEffectToSubMenu(mainIndex, subIndex)}>{subMenu.name}</li>
+                    <li ref={(el) => menuTitleRefs.current[mainIndex].sub.push(el)} key={subIndex} onMouseOver={() => addEffectToSubMenu(mainIndex, subIndex)} onMouseOut={() => deleteEffectToSubMenu(mainIndex, subIndex)} onClick={() => {
+                      location.pathname == `/menu/${menu.id}/${subMenu.id}` ? navigate(`/menu/${menu.id}/${subMenu.id}`, {replace: true}) : navigate(`/menu/${menu.id}/${subMenu.id}`);  
+                    }} >{subMenu.name}</li>
                   )
                 }
               </ul>
