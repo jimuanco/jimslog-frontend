@@ -70,7 +70,7 @@ const Home = (props) => {
             </li>
           )}
       </ul>
-      { props.userRole === "ADMIN" && <Link className="write-post-button" to="write">글 작성</Link> }
+      { props.userRole === "ADMIN" && <Link className="write-post-button" to="/write">글 작성</Link> }
       <Pagination
         activePage={page}
         itemsCountperPage={5}

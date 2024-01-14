@@ -111,7 +111,7 @@ function App() {
           <Routes>
             <Route path="/" element={ <Home userRole={userRole} />} />
             <Route path="/menu/:mainMenuId/:subMenuId?" element={ <Home userRole={userRole} />} />
-            <Route path="/write" element={ userRole === "ADMIN" ? <Write accessToken={accessToken} isPcScreen={isPcScreen} /> : null } />
+            <Route path="/write" element={ userRole === "ADMIN" ? <Write accessToken={accessToken} isPcScreen={isPcScreen} menus={menus} /> : null } />
             <Route path="/read/:postId" element={ <Read accessToken={accessToken} userRole={userRole} /> } />
             <Route path="/edit/:postId" element={ <Edit accessToken={accessToken} isPcScreen={isPcScreen} /> } />
             <Route path="/menu-change" element={ <MenuChnage menus={menus} /> } />

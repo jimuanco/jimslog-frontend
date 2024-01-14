@@ -416,6 +416,54 @@ body .w-md-editor-text-input {
   line-height: 24px !important;
 }
 
+/* MenuSelectorModal */
+.menu-selector-bg {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.03);
+  backdrop-filter: blur(1px);
+  position: fixed;
+  z-index: 100;
+}
+
+.menu-selector-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+  height: 150px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.05), 0px 1px 3px 0px rgba(0, 0, 0, 0.10), 0px 1px 0px 0px rgba(255, 255, 255, 0.10) inset;
+  border-radius: 8px;
+}
+
+.menu-selector-content .menu-select-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-selector-content .menu-select-box label{
+  margin-bottom: 5px;
+}
+
+.menu-selector-content .button-group button:first-child {
+  margin-right: 20px;
+}
+
+.menu-selector-content .button-group button {
+  background-color: #fff;
+  border: 1px solid #333333;
+  border-radius: 3px;
+}
+
 /* ReadView */
 .read-view {
   border: 1px solid #d3d3d3;
