@@ -462,6 +462,7 @@ body .w-md-editor-text-input {
   background-color: #fff;
   border: 1px solid #333333;
   border-radius: 3px;
+  cursor: pointer;
 }
 
 /* ReadView */

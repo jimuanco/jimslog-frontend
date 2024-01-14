@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import ReactTextareaAutosize from "react-textarea-autosize";
 import { PC } from "../components/ResponsiveConfig";
+import MenuSelectorModal from "../components/MenuSelectorModal";
 
 const Edit = (props) => {
 
@@ -13,6 +14,9 @@ const Edit = (props) => {
   const fileInputRef = useRef(null);
   const cursorPosition = useRef(0);
 
+  const [selectorModal, setSelectorModal] = useState(false);
+  const selectedMenu = useRef(0);
+
   useEffect(() => {
     axios.get(`/api/posts/${postId}`)
       .then((response) => {
@@ -20,10 +24,11 @@ const Edit = (props) => {
       });
   },[]);
 
-  const edit = () => {
+  const edit = (menuId) => {
     axios.patch(`/api/posts/${postId}`, {
       title: post.title,
-      content: post.content
+      content: post.content,
+      menuId: menuId
     }, {headers: {Authorization: `Bearer ${props.accessToken}`}})
       .then(() => {
         navigate("/", {replace: true});
@@ -68,43 +73,54 @@ const Edit = (props) => {
     previewBox && (previewBox.scrollTop = previewBox.scrollHeight);
   }
 
+  const handleMenuChange = (e) => {
+    selectedMenu.current = e.target.value;
+  }
+
   return (
-    <div className="write-view">
-      <div className="write-view-title">
-        <ReactTextareaAutosize className="write-input-title" placeholder="제목을 입력해주세요." defaultValue={post.title} onInput={e => setPost({...post, title: e.target.value})} onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-          }
-        }} />
-        <PC>
-          <div className="write-render-title">
-            {post.title}
-          </div>
-        </PC>
+    <div>
+      <div className="write-view">
+        <div className="write-view-title">
+          <ReactTextareaAutosize className="write-input-title" placeholder="제목을 입력해주세요." defaultValue={post.title} onInput={e => setPost({...post, title: e.target.value})} onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
+          }} />
+          <PC>
+            <div className="write-render-title">
+              {post.title}
+            </div>
+          </PC>
+        </div>
+        <div className="write-view-content">
+          <MDEditor
+            value={post.content}
+            onChange={e => {
+              setPost({...post, content: e});
+              handlePreviewScroll();
+            }}
+            previewOptions={{
+              allowedElements: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'a', 'span', 'br', 'ul', 'ol', 'li', 'strong' ,'hr', 'em', 'del', 'table', 'thead', 'th', 'tbody', 'tr', 'td', 'blockquote', 'code', 'pre', 'img'],
+            }}
+            preview={props.isPcScreen ? "live" : "edit"}
+            commands={[commands.bold, commands.italic, commands.strikethrough, commands.hr, commands.group([commands.title1, commands.title2, commands.title3, commands.title4, commands.title5, commands.title6], {
+              name: 'title',
+              groupName: 'title',
+              buttonProps: { 'aria-label': 'Insert title'}
+            }), commands.divider, commands.link, commands.quote, commands.code, commands.codeBlock, image, commands.table, commands.divider, commands.unorderedListCommand, commands.orderedListCommand, commands.divider, commands.help]}
+            height="100%"
+          />
+          <input style={{display: "none"}} ref={fileInputRef} type="file" accept="image/*" onChange={saveImage}/>
+        </div>
+        <div className="write-view-footer">
+          <button type="button" className="submit-post-button" onClick={() => {
+            setSelectorModal(true);
+          }}>수정 완료</button>
+        </div>
       </div>
-      <div className="write-view-content">
-        <MDEditor
-          value={post.content}
-          onChange={e => {
-            setPost({...post, content: e});
-            handlePreviewScroll();
-          }}
-          previewOptions={{
-            allowedElements: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'a', 'span', 'br', 'ul', 'ol', 'li', 'strong' ,'hr', 'em', 'del', 'table', 'thead', 'th', 'tbody', 'tr', 'td', 'blockquote', 'code', 'pre', 'img'],
-          }}
-          preview={props.isPcScreen ? "live" : "edit"}
-          commands={[commands.bold, commands.italic, commands.strikethrough, commands.hr, commands.group([commands.title1, commands.title2, commands.title3, commands.title4, commands.title5, commands.title6], {
-            name: 'title',
-            groupName: 'title',
-            buttonProps: { 'aria-label': 'Insert title'}
-          }), commands.divider, commands.link, commands.quote, commands.code, commands.codeBlock, image, commands.table, commands.divider, commands.unorderedListCommand, commands.orderedListCommand, commands.divider, commands.help]}
-          height="100%"
-        />
-        <input style={{display: "none"}} ref={fileInputRef} type="file" accept="image/*" onChange={saveImage}/>
-      </div>
-      <div className="write-view-footer">
-        <button type="button" className="submit-post-button" onClick={edit}>수정 완료</button>
-      </div>
+      {
+        selectorModal && <MenuSelectorModal setSelectorModal={setSelectorModal} menus={props.menus} handleMenuChange={handleMenuChange} selectedMenu={selectedMenu} write={edit} />
+      }
     </div>
   )
 }
