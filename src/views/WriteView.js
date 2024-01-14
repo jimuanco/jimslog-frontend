@@ -107,10 +107,6 @@ const Write = (props) => {
         <div className="write-view-footer">
           {/* <button type="button" className="submit-post-button" onClick={write}>글 작성 완료</button> */}
           <button type="button" className="submit-post-button" onClick={() => {
-            if(props.menus.length === 0) {
-              write(0);
-              return;
-            }
             setSelectorModal(true);
           }}>글 작성 완료</button>
         </div>
@@ -147,12 +143,12 @@ const MenuSelectorModal = (props) => {
             {props.menus.map((menu, mainIndex) => (
               <>
                 {menu.children.length === 0 ? (
-                  <option value={menu.id}>{menu.name}</option>
+                  <option key={mainIndex} value={menu.id}>{menu.name}</option>
                 ) : (
                   <>
-                    <option value={menu.id} disabled>{menu.name}</option>
+                    <option key={mainIndex} value={menu.id} disabled>{menu.name}</option>
                     {menu.children.map((subMenu, subIndex) => (
-                      <option value={subMenu.id}>{subMenu.name}</option>
+                      <option key={subIndex} value={subMenu.id}>{subMenu.name}</option>
                     ))}
                   </>
                 )}
