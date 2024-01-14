@@ -508,6 +508,51 @@ body .w-md-editor-text-input {
   cursor: pointer;
 }
 
+.delete-modal-bg {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.03);
+  backdrop-filter: blur(1px);
+  position: fixed;
+  z-index: 100;
+}
+
+.delete-modal-content {
+  position: relative;
+  width: 280px;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.05), 0px 1px 3px 0px rgba(0, 0, 0, 0.10), 0px 1px 0px 0px rgba(255, 255, 255, 0.10) inset;
+  border-radius: 8px;
+}
+
+.delete-modal-content strong {
+  display: block;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.delete-modal-content .button-group {
+  display: flex;
+  justify-content: center;
+}
+
+.delete-modal-content .button-group button {
+  background-color: #fff;
+  border: 1px solid #333333;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.delete-modal-content .button-group button:first-child {
+  margin-right: 50px;
+}
+
 /* >= 1024px (Desktop) */
 @media screen and (min-width: 1024px) {
   /* Reset CSS */
