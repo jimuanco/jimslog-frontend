@@ -210,7 +210,7 @@ const Menu = (props) => {
       <button type="button" className="new-menu-button" onClick={() => {
         props.location.pathname == "/menu-change" ? props.navigate("/menu-change", {replace: true}) : props.navigate("/menu-change");
         toggleMenu && toggleMenu();
-      }}>NEW</button>
+      }}></button>
       {props.isLoading ? null : props.accessToken == null ? <LoginBtn setModal={props.setModal} toggleMenu={toggleMenu} /> : <LogoutBtn setAccessToken={props.setAccessToken} setUserRole={props.setUserRole} />}
     </div>
   )

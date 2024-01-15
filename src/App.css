@@ -154,10 +154,15 @@ textarea:active {
 
 .main-menu-content .new-menu-button {
   display: block;
+  width: 25px;
+  height: 25px;
   background-color: #fff;
-  border: 1px solid #333333;
-  border-radius: 3px;
+  border: none;
   margin-bottom: 10px;
+  background-image: url('./images/pencil-solid.svg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
   cursor: pointer;
 }
 
