@@ -185,6 +185,10 @@ const MenuChnage = (props) => {
 
   const deleteMenu = () => {
     if(clickedMainMenu[0] > 0 && clickedSubMenu[0] === 0) {
+      if(newMenus[clickedMainMenu[0]-1].postsCount > 0) {
+        alert("게시글이 존재하는 메뉴는 삭제할 수 없습니다.");
+        return;
+      }
       setNewMenus(prevMenus => [
         ...prevMenus.slice(0, clickedMainMenu[0] - 1),
         ...prevMenus.slice(clickedMainMenu[0]).map(item => ({ ...item, listOrder: item.listOrder - 1 }))
@@ -193,6 +197,10 @@ const MenuChnage = (props) => {
     }
 
     if(clickedSubMenu[0] > 0) {
+      if(newMenus[clickedMainMenu[0]-1].children[clickedSubMenu[0]-1].postsCount > 0) {
+        alert("게시글이 존재하는 메뉴는 삭제할 수 없습니다.");
+        return;
+      }
       setNewMenus(prevMenus => {
         const changedMenus = [...prevMenus];
         const parentMenu = changedMenus[clickedMainMenu[0] - 1];
