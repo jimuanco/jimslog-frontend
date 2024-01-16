@@ -29,6 +29,7 @@ function App() {
   const [menus, setMenus] = useState([]);
   const [totalPostCount, setTotalPostCount] = useState(0);
   const [postPageTitle, setPostPageTitle] = useState("");
+  const [countPerPage, setCountPerPage] = useState(0);
 
   const mainStylesForPcWritePage = {
     width: isWritePageOnPc && '96%',
@@ -65,7 +66,13 @@ function App() {
     axios.get("/api/menus")
       .then((response) => {
         setMenus(response.data.data);
-        (response.data.count !== undefined) ? setTotalPostCount(response.data.count) : setTotalPostCount(0);
+        if(response.data.count !== undefined) {
+          setTotalPostCount(response.data.count);
+          setCountPerPage(response.data.count);
+        } else {
+          setTotalPostCount(0);
+          setCountPerPage(0);
+        }
         location.pathname === "/" && (response.data.count !== undefined ? setPostPageTitle(`전체글(${response.data.count})`) : setPostPageTitle(`전체글(0)`))
         console.log(response.data.data);
       });
@@ -99,7 +106,7 @@ function App() {
       
       <Mobile>
         <SideBar width={280} isWritePage={isWritePage}>
-          <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} setUserRole={setUserRole} menus={menus} navigate={navigate} location={location} totalPostCount={totalPostCount} setPostPageTitle={setPostPageTitle} />
+          <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} setUserRole={setUserRole} menus={menus} navigate={navigate} location={location} totalPostCount={totalPostCount} setPostPageTitle={setPostPageTitle} setCountPerPage={setCountPerPage} />
         </SideBar>
       </Mobile>
 
@@ -107,14 +114,14 @@ function App() {
         {!isWritePage && 
           <PC>
             <nav className="main-menu-pc">
-              <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} setUserRole={setUserRole} menus={menus} navigate={navigate} location={location} totalPostCount={totalPostCount} setPostPageTitle={setPostPageTitle} />
+              <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} setUserRole={setUserRole} menus={menus} navigate={navigate} location={location} totalPostCount={totalPostCount} setPostPageTitle={setPostPageTitle} setCountPerPage={setCountPerPage} />
             </nav>
           </PC>
         }
         <article className="main-content" style={mainContentStylesForPcWritePage}>
           <Routes>
-            <Route path="/" element={ <Home userRole={userRole} postPageTitle={postPageTitle} menus={menus} />} />
-            <Route path="/menu/:mainMenuId/:subMenuId?" element={ <Home userRole={userRole} postPageTitle={postPageTitle} menus={menus} />} />
+            <Route path="/" element={ <Home userRole={userRole} postPageTitle={postPageTitle} menus={menus} countPerPage={countPerPage} />} />
+            <Route path="/menu/:mainMenuId/:subMenuId?" element={ <Home userRole={userRole} postPageTitle={postPageTitle} menus={menus} countPerPage={countPerPage} />} />
             <Route path="/write" element={ userRole === "ADMIN" ? <Write accessToken={accessToken} isPcScreen={isPcScreen} menus={menus} /> : null } />
             <Route path="/read/:postId" element={ <Read accessToken={accessToken} userRole={userRole} /> } />
             <Route path="/edit/:postId" element={ <Edit accessToken={accessToken} isPcScreen={isPcScreen} menus={menus} /> } />
@@ -183,6 +190,7 @@ const Menu = (props) => {
       <h1 ref={entireListMenu} onMouseOver={() => addEffectToEntireListMenu()} onMouseOut={() => deleteEffectToEntireListMenu()} onClick={() => {
         location.pathname == "/" ? navigate("/", {replace: true}) : navigate("/");
         props.setPostPageTitle(`전체글(${props.totalPostCount})`);
+        props.setCountPerPage(props.totalPostCount);
       }}>전체보기({props.totalPostCount})</h1>
       <div className="main-menu-lists">
         {props.menus.length > 0 && props.menus.map((menu, mainIndex) => 
@@ -190,6 +198,7 @@ const Menu = (props) => {
             <h2 ref={(el) => menuTitleRefs.current[mainIndex] = {main: el, sub: []}} onMouseOver={() => addEffectToMainMenu(mainIndex)} onMouseOut={() => deleteEffectToMainMenu(mainIndex)} onClick={() => {
               location.pathname === `/menu/${menu.id}` ? navigate(`/menu/${menu.id}`, {replace: true}) : navigate(`/menu/${menu.id}`);
               props.setPostPageTitle(`${menu.name}(${menu.postsCount})`);
+              props.setCountPerPage(menu.postsCount);
             }}>{`${menu.name}(${menu.postsCount})`}</h2>
             <div className="sub-menu-lists">
               <ul>
@@ -199,6 +208,7 @@ const Menu = (props) => {
                     <li ref={(el) => menuTitleRefs.current[mainIndex].sub.push(el)} key={subIndex} onMouseOver={() => addEffectToSubMenu(mainIndex, subIndex)} onMouseOut={() => deleteEffectToSubMenu(mainIndex, subIndex)} onClick={() => {
                       location.pathname === `/menu/${menu.id}/${subMenu.id}` ? navigate(`/menu/${menu.id}/${subMenu.id}`, {replace: true}) : navigate(`/menu/${menu.id}/${subMenu.id}`);
                       props.setPostPageTitle(`${subMenu.name}(${subMenu.postsCount})`);
+                      props.setCountPerPage(subMenu.postsCount);
                     }} >{`${subMenu.name}(${subMenu.postsCount})`}</li>
                   )
                 }

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react"
 import Pagination from "react-js-pagination";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 const Home = (props) => {
   const {mainMenuId, subMenuId} = useParams();
@@ -10,26 +10,36 @@ const Home = (props) => {
   const postTitleRefs = useRef([]);
   let matchThumbnail;
 
+  const [searchParams] = useSearchParams();
   const[page, setPage] = useState(1);
 
   const handlePageChange = (page) => {
-    setPage(page);
+    if(page === 1) {
+      searchParams.get("page") ? navigate("") : navigate("", {replace: true});
+    } else {
+      parseInt(searchParams.get("page")) === page ? navigate(`?page=${page}`, {replace: true}) : navigate(`?page=${page}`);
+    }
   }
   
   const location = useLocation();
 
   useEffect(() => {
+    searchParams.get("page") ? fetchPosts(parseInt(searchParams.get("page"))) : fetchPosts(1);
+  }, [location.key]);
+
+  const fetchPosts = (page) => {
     let menuId = 0;
     if(subMenuId !== undefined) {
       menuId = subMenuId;
     } else if(mainMenuId !== undefined) {
       menuId = mainMenuId;
     }
-    axios.get(`/api/posts?page=1&size=5&menu=${menuId}`)
+    axios.get(`/api/posts?page=${page}&size=5&menu=${menuId}`)
       .then((response) => {
         setPosts(response.data.data);
+        setPage(page);
       });
-  }, [location.key]);
+  }
 
   const addUnderlineToTitle = (index) => {
     postTitleRefs.current[index].style.textDecoration = "underline";
@@ -73,8 +83,8 @@ const Home = (props) => {
       { props.userRole === "ADMIN" && props.menus.length > 0 && <Link className="write-post-button" to="/write">글 작성</Link> }
       <Pagination
         activePage={page}
-        itemsCountperPage={5}
-        totalItemsCount={20}
+        itemsCountPerPage={5}
+        totalItemsCount={props.countPerPage}
         pageRangeDisplayed={5}
         prevPageText={"<"}
         nextPageText={">"}
