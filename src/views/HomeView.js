@@ -1,38 +1,64 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react"
-import { Link, useNavigate } from "react-router-dom";
+import Pagination from "react-js-pagination";
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 const Home = (props) => {
+  const {mainMenuId, subMenuId} = useParams();
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
   const postTitleRefs = useRef([]);
   let matchThumbnail;
 
+  const [searchParams] = useSearchParams();
+  const[page, setPage] = useState(1);
+
+  const handlePageChange = (page) => {
+    if(page === 1) {
+      searchParams.get("page") ? navigate("") : navigate("", {replace: true});
+    } else {
+      parseInt(searchParams.get("page")) === page ? navigate(`?page=${page}`, {replace: true}) : navigate(`?page=${page}`);
+    }
+  }
+  
+  const location = useLocation();
+
   useEffect(() => {
-    axios.get("/api/posts?page=1&size=5")
+    searchParams.get("page") ? fetchPosts(parseInt(searchParams.get("page"))) : fetchPosts(1);
+    window.scrollTo(0, 0);
+  }, [location.key]);
+
+  const fetchPosts = (page) => {
+    let menuId = 0;
+    if(subMenuId !== undefined) {
+      menuId = subMenuId;
+    } else if(mainMenuId !== undefined) {
+      menuId = mainMenuId;
+    }
+    axios.get(`/api/posts?page=${page}&size=5&menu=${menuId}`)
       .then((response) => {
         setPosts(response.data.data);
-        props.setCountPosts(response.data.data.length);
+        setPage(page);
       });
-  }, []);
+  }
 
   const addUnderlineToTitle = (index) => {
     postTitleRefs.current[index].style.textDecoration = "underline";
   }
 
-  const deleteUnderlineTotile = (index) => {
+  const deleteUnderlineToTiTle = (index) => {
     postTitleRefs.current[index].style.textDecoration = "none";
   }
 
   return (
     <div className="main-post">
-      <h3 className="main-post-title">전체글({props.countPosts})</h3>
+      <h3 className="main-post-title">{props.postPageTitle}</h3>
       <ul className="main-post-lists">
           {posts.length > 0 && posts.map((post, index) => 
             <li key={post.id}>
               <div className="main-post-card" onClick={() => {
                 navigate(`/read/${post.id}`);
-              }} onMouseOver={() => addUnderlineToTitle(index)} onMouseOut={() => deleteUnderlineTotile(index)}>
+              }} onMouseOver={() => addUnderlineToTitle(index)} onMouseOut={() => deleteUnderlineToTiTle(index)}>
                 <div className="thumbnail">
                   {
                     (() => {
@@ -55,7 +81,16 @@ const Home = (props) => {
             </li>
           )}
       </ul>
-      { props.userRole === "ADMIN" && <Link className="write-post-button" to="write">글 작성</Link> }
+      { props.userRole === "ADMIN" && props.menus.length > 0 && <Link className="write-post-button" to="/write">글 작성</Link> }
+      <Pagination
+        activePage={page}
+        itemsCountPerPage={5}
+        totalItemsCount={props.countPerMenu}
+        pageRangeDisplayed={5}
+        prevPageText={"‹"}
+        nextPageText={"›"}
+        onChange={handlePageChange}
+      />
     </div>
   )
 }

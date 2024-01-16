@@ -8,6 +8,7 @@ const Read = (props) => {
   const {postId} = useParams();
   const [post, setPost] = useState([]);
   const navigate = useNavigate();
+  const [deleteModal, setDeleteModal] = useState(false);
 
   useEffect(() => {
     axios.get(`/api/posts/${postId}`)
@@ -39,11 +40,33 @@ const Read = (props) => {
         <span className="post-date">2024-01-01</span>
         <div className="read-view-buttons">
           {props.userRole === "ADMIN" && <button className="edit-button" type="button" onClick={moveToEdit}>수정</button>}
-          {props.userRole === "ADMIN" && <button className="delete-button" type="button" onClick={deletePost}>삭제</button>}
+          {props.userRole === "ADMIN" && <button className="delete-button" type="button" onClick={() => setDeleteModal(true)}>삭제</button>}
         </div>
       </div>
       <div>
         <MDEditor.Markdown source={post.content} />
+      </div>
+      {
+        deleteModal && 
+        <PostDeleteModal setDeleteModal={setDeleteModal} deletePost={deletePost} />
+      }
+    </div>
+  )
+}
+
+const PostDeleteModal = (props) => {
+  return (
+    <div className="delete-modal-bg" onClick={() => { 
+      props.setDeleteModal(false);
+    }}>
+      <div className="delete-modal-content" onClick={(e) => { e.stopPropagation() }}>
+        <strong>삭제 시 다시 복구할 수 없습니다.</strong>
+        <div className="button-group">
+          <button type="button" onClick={props.deletePost}>삭제</button>
+          <button type="button" onClick={() => { 
+            props.setDeleteModal(false);
+          }}>취소</button>
+        </div>
       </div>
     </div>
   )

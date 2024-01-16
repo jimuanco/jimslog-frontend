@@ -87,6 +87,7 @@ textarea:active {
 
 .main {
   max-width: 788px;
+  min-height: 100dvh;
   margin: 0 auto;
 }
 
@@ -95,6 +96,8 @@ textarea:active {
 }
 
 .footer {
+  max-width: 788px;
+  margin: 0 auto;
   padding: 10px;
 }
 
@@ -112,14 +115,151 @@ textarea:active {
 }
 
 /* Menu */
+.main-menu-content ul,
+.main-menu-content ol,
+.main-menu-content li {
+  list-style-type: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
 .main-menu-content h1 {
+  font-size: 18px;
+  font-weight: 400;
   margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.main-menu-lists {
+  margin-bottom: 10px;
+}
+
+.main-menu-lists .main-menu-item {
+  max-width: 210px;
+  overflow-wrap: break-word;
+}
+
+.main-menu-lists .main-menu-item:not(:last-of-type) {
+  margin-bottom: 5px;
+}
+
+.main-menu-lists .main-menu-item h2 {
+  font-size: 18px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.main-menu-item .sub-menu-lists {
+  padding-left: 10px;
+}
+
+.main-menu-item .sub-menu-lists ul li {
+  cursor: pointer;
+}
+
+.main-menu-content .new-menu-button {
+  display: block;
+  width: 25px;
+  height: 25px;
+  background-color: #fff;
+  border: none;
+  margin-bottom: 10px;
+  background-image: url('./images/pencil-solid.svg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  cursor: pointer;
 }
 
 .login-button, .logout-button {
   background-color: #fff;
   border: 1px solid #333333;
   border-radius: 3px;
+}
+
+/* MenuChangeView */
+.menu-change-content ul,
+.menu-change-content ol,
+.menu-change-content li {
+  list-style-type: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.menu-change-content {
+  border: 1px solid #d3d3d3;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.menu-change-lists {
+  margin-bottom: 10px;
+}
+
+.menu-change-lists .menu-change-item:not(:last-of-type) {
+  margin-bottom: 5px;
+}
+
+.menu-change-lists .menu-change-item h2 {
+  font-size: 18px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.menu-change-item .sub-change-lists {
+  padding-left: 10px;
+}
+
+.menu-change-item .sub-change-lists ul li{
+  cursor: pointer;
+}
+
+.button-group .menu-controll-buttons {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.button-group .menu-controll-buttons button {
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  background-color: #fff;
+  border: 1px solid #333333;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.button-group .menu-controll-buttons button:not(:last-of-type) {
+  margin-right: 5px;
+}
+
+.menu-controll-buttons .main-add-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+}
+
+.menu-controll-buttons .sub-add-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+}
+
+.button-group .action-buttons button {
+  width: 56px;
+  height: 35px;
+  padding: 0;
+  background-color: #fff;
+  border: 1px solid #333333;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.button-group .action-buttons button:not(:last-of-type) {
+  margin-right: 5px;
 }
 
 /* HomeView */
@@ -132,6 +272,7 @@ textarea:active {
 }
 
 .main-post-title {
+  overflow-wrap: break-word;
   border: 1px solid #d3d3d3;
   border-radius: 5px;
   padding: 15px;
@@ -201,6 +342,41 @@ textarea:active {
   height: 30px;
 }
 
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+  margin: 20px auto;
+
+  li {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #d3d3d3;
+
+    &:hover,
+    &:active {
+      background-color: #d3d3d3;
+      color: #fff;
+    }
+
+    &.active {
+      background-color: #000;
+      color: #fff;
+      border: none;
+    }
+
+    a {
+      display: flex;
+      justify-content: center;
+      font-size: 18px;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
 /* LoginModal */
 .modal-background {
   width: 100%;
@@ -235,7 +411,7 @@ textarea:active {
 .write-view {
   height: 100dvh;
   padding: 30px 0 10px 0;
-  display:flex;
+  display: flex;
   flex-direction: column;
 }
 
@@ -286,6 +462,59 @@ body .w-md-editor-text-input {
   line-height: 24px !important;
 }
 
+/* MenuSelectorModal */
+.menu-selector-bg {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.03);
+  backdrop-filter: blur(1px);
+  position: fixed;
+  z-index: 100;
+}
+
+.menu-selector-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+  height: 150px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.05), 0px 1px 3px 0px rgba(0, 0, 0, 0.10), 0px 1px 0px 0px rgba(255, 255, 255, 0.10) inset;
+  border-radius: 8px;
+}
+
+.menu-selector-content .menu-select-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-selector-content .menu-select-box label {
+  margin-bottom: 5px;
+}
+
+.menu-selector-content .menu-select-box select {
+  max-width: 140px;
+}
+
+.menu-selector-content .button-group button:first-child {
+  margin-right: 20px;
+}
+
+.menu-selector-content .button-group button {
+  background-color: #fff;
+  border: 1px solid #333333;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
 /* ReadView */
 .read-view {
   border: 1px solid #d3d3d3;
@@ -294,7 +523,9 @@ body .w-md-editor-text-input {
 }
 
 .read-view h1 {
+  overflow-wrap: break-word;
   border-bottom: 1px solid #d3d3d3;
+  padding-bottom: 10px;
   margin-bottom: 3px;
 }
 
@@ -327,6 +558,51 @@ body .w-md-editor-text-input {
   border: none;
   padding: 0;
   cursor: pointer;
+}
+
+.delete-modal-bg {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.03);
+  backdrop-filter: blur(1px);
+  position: fixed;
+  z-index: 100;
+}
+
+.delete-modal-content {
+  position: relative;
+  width: 280px;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.05), 0px 1px 3px 0px rgba(0, 0, 0, 0.10), 0px 1px 0px 0px rgba(255, 255, 255, 0.10) inset;
+  border-radius: 8px;
+}
+
+.delete-modal-content strong {
+  display: block;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.delete-modal-content .button-group {
+  display: flex;
+  justify-content: center;
+}
+
+.delete-modal-content .button-group button {
+  background-color: #fff;
+  border: 1px solid #333333;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.delete-modal-content .button-group button:first-child {
+  margin-right: 50px;
 }
 
 /* >= 1024px (Desktop) */
@@ -364,6 +640,7 @@ body .w-md-editor-text-input {
 
   .main-content {
     width: 768px;
+    flex-shrink: 0;
     margin-left: 10px;
     padding: 0;
   }
