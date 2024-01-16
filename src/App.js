@@ -106,7 +106,7 @@ function App() {
       
       <Mobile>
         <SideBar width={280} isWritePage={isWritePage}>
-          <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} setUserRole={setUserRole} menus={menus} navigate={navigate} location={location} totalPostCount={totalPostCount} setPostPageTitle={setPostPageTitle} setCountPerMenu={setCountPerMenu} />
+          <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} userRole={userRole} setUserRole={setUserRole} menus={menus} navigate={navigate} location={location} totalPostCount={totalPostCount} setPostPageTitle={setPostPageTitle} setCountPerMenu={setCountPerMenu} />
         </SideBar>
       </Mobile>
 
@@ -114,7 +114,7 @@ function App() {
         {!isWritePage && 
           <PC>
             <nav className="main-menu-pc">
-              <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} setUserRole={setUserRole} menus={menus} navigate={navigate} location={location} totalPostCount={totalPostCount} setPostPageTitle={setPostPageTitle} setCountPerMenu={setCountPerMenu} />
+              <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} userRole={userRole} setUserRole={setUserRole} menus={menus} navigate={navigate} location={location} totalPostCount={totalPostCount} setPostPageTitle={setPostPageTitle} setCountPerMenu={setCountPerMenu} />
             </nav>
           </PC>
         }
@@ -217,10 +217,13 @@ const Menu = (props) => {
           </div>
         )}
       </div>
-      <button type="button" className="new-menu-button" onClick={() => {
-        props.location.pathname == "/menu-change" ? props.navigate("/menu-change", {replace: true}) : props.navigate("/menu-change");
-        toggleMenu && toggleMenu();
-      }}></button>
+      {
+        props.userRole === "ADMIN" &&
+        <button type="button" className="new-menu-button" onClick={() => {
+          props.location.pathname == "/menu-change" ? props.navigate("/menu-change", {replace: true}) : props.navigate("/menu-change");
+          toggleMenu && toggleMenu();
+        }}></button>
+      }
       {props.isLoading ? null : props.accessToken == null ? <LoginBtn setModal={props.setModal} toggleMenu={toggleMenu} /> : <LogoutBtn setAccessToken={props.setAccessToken} setUserRole={props.setUserRole} />}
     </div>
   )

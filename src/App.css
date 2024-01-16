@@ -134,6 +134,11 @@ textarea:active {
   margin-bottom: 10px;
 }
 
+.main-menu-lists .main-menu-item {
+  max-width: 210px;
+  overflow-wrap: break-word;
+}
+
 .main-menu-lists .main-menu-item:not(:last-of-type) {
   margin-bottom: 5px;
 }
@@ -267,6 +272,7 @@ textarea:active {
 }
 
 .main-post-title {
+  overflow-wrap: break-word;
   border: 1px solid #d3d3d3;
   border-radius: 5px;
   padding: 15px;
@@ -490,8 +496,12 @@ body .w-md-editor-text-input {
   flex-direction: column;
 }
 
-.menu-selector-content .menu-select-box label{
+.menu-selector-content .menu-select-box label {
   margin-bottom: 5px;
+}
+
+.menu-selector-content .menu-select-box select {
+  max-width: 140px;
 }
 
 .menu-selector-content .button-group button:first-child {
@@ -513,7 +523,9 @@ body .w-md-editor-text-input {
 }
 
 .read-view h1 {
+  overflow-wrap: break-word;
   border-bottom: 1px solid #d3d3d3;
+  padding-bottom: 10px;
   margin-bottom: 3px;
 }
 
@@ -628,6 +640,7 @@ body .w-md-editor-text-input {
 
   .main-content {
     width: 768px;
+    flex-shrink: 0;
     margin-left: 10px;
     padding: 0;
   }

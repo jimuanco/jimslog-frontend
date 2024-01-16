@@ -18,6 +18,7 @@ const MenuChnage = (props) => {
   }, [newMenus])
 
   const fetchChangeMenus = () => {
+    console.log(newMenus)
     axios.post("/api/menus", newMenus)
       .then(() => {
         navigate("/");
