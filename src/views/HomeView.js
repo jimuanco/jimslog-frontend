@@ -25,6 +25,7 @@ const Home = (props) => {
 
   useEffect(() => {
     searchParams.get("page") ? fetchPosts(parseInt(searchParams.get("page"))) : fetchPosts(1);
+    window.scrollTo(0, 0);
   }, [location.key]);
 
   const fetchPosts = (page) => {
@@ -84,10 +85,10 @@ const Home = (props) => {
       <Pagination
         activePage={page}
         itemsCountPerPage={5}
-        totalItemsCount={props.countPerPage}
+        totalItemsCount={props.countPerMenu}
         pageRangeDisplayed={5}
-        prevPageText={"<"}
-        nextPageText={">"}
+        prevPageText={"‹"}
+        nextPageText={"›"}
         onChange={handlePageChange}
       />
     </div>
