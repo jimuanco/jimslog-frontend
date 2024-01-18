@@ -86,6 +86,7 @@ textarea:active {
 }
 
 .main {
+  position: relative;
   max-width: 788px;
   min-height: 100dvh;
   margin: 0 auto;
@@ -378,7 +379,7 @@ textarea:active {
 }
 
 /* LoginModal */
-.modal-background {
+/* .modal-background {
   width: 100%;
   height: 100%;
   background-color: rgba(0,0,0,0.03);
@@ -404,6 +405,98 @@ textarea:active {
   font-size: 18px;
   top: 5px;
   right: 10px;
+  cursor: pointer;
+} */
+
+/* LoginView */
+.login-view {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 250px;
+}
+
+.login-view .login-content {
+  margin-bottom: 10px;
+}
+
+.login-content .email-box {
+  margin-bottom: 10px;
+}
+
+.login-content .email-box input,
+.login-content .password-box input {
+  width: 250px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 4px;
+  border: none;
+  background-color: #F6F8FA;
+}
+
+.login-view .button-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-view .button-box .login-button {
+  width: 100%;
+  height: 36px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 4px;
+  background-color: #2860E1;
+  color: #fff;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.login-view .button-box .signup-button {
+  border: none;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+/* SignupView */
+.signup-view {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 250px;
+}
+
+.signup-view .signup-content {
+  margin-bottom: 10px;
+}
+
+.signup-content .name-box,
+.signup-content .email-box {
+  margin-bottom: 10px;
+}
+
+.signup-content .name-box input,
+.signup-content .email-box input,
+.signup-content .password-box input {
+  width: 250px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 4px;
+  border: none;
+  background-color: #F6F8FA;
+}
+
+.signup-view button {
+  width: 100%;
+  height: 36px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 4px;
+  background-color: #2860E1;
+  color: #fff;
+  margin-bottom: 10px;
   cursor: pointer;
 }
 
@@ -619,12 +712,13 @@ body .w-md-editor-text-input {
   }
 
   /* LoginModal */
-  .modal-content {
+  /* .modal-content {
     width: 380px;
-  }
+  } */
 
   /* Main */
   .main {
+    position: static;
     display: flex;
     justify-content: center;
     max-width: 1020px;
@@ -639,6 +733,7 @@ body .w-md-editor-text-input {
   }
 
   .main-content {
+    position: relative;
     width: 768px;
     flex-shrink: 0;
     margin-left: 10px;
