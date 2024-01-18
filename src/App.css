@@ -323,12 +323,20 @@ textarea:active {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+
+.main-post-text .post-date {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 6px;
 }
 
 .main-post-text .post-content {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 2;
+  font-size: 15px;
 }
 
 .write-post-button {
@@ -764,7 +772,7 @@ body .w-md-editor-text-input {
   }
 
   .main-post-text .post-content {
-    font-size: 15px;
+    -webkit-line-clamp: 4;
   }
 
   /* WriteView */
