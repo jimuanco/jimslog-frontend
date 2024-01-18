@@ -19,7 +19,7 @@ const MenuChnage = (props) => {
 
   const fetchChangeMenus = () => {
     console.log(newMenus)
-    axios.post("/api/menus", newMenus)
+    axios.post("/api/menus", newMenus, {headers: {Authorization: `Bearer ${props.accessToken}`}})
       .then(() => {
         navigate("/");
         console.log("메뉴 수정");

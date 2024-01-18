@@ -32,7 +32,7 @@ const Login = (props) => {
       </div>
       <div className="button-box">
         <button className="login-button" onClick={login}>로그인</button>
-        <button className="signup-button" onClick={() => navigate("/signup")}>회원가입</button>
+        <button className="signup-button" onClick={() => navigate("/signup", {replace: true})}>회원가입</button>
       </div>
     </div>
   )

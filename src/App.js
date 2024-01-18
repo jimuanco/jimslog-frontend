@@ -122,7 +122,7 @@ function App() {
             <Route path="/write" element={ userRole === "ADMIN" ? <Write accessToken={accessToken} isPcScreen={isPcScreen} menus={menus} /> : null } />
             <Route path="/read/:postId" element={ <Read accessToken={accessToken} userRole={userRole} /> } />
             <Route path="/edit/:postId" element={ <Edit accessToken={accessToken} isPcScreen={isPcScreen} menus={menus} /> } />
-            <Route path="/menu-change" element={ <MenuChnage menus={menus} /> } />
+            <Route path="/menu-change" element={ <MenuChnage menus={menus} accessToken={accessToken} /> } />
             
             <Route path="/login" element={<Login setAccessToken={setAccessToken} refresh={refresh} setUserRole={setUserRole} />} />
             <Route path="/signup" element={ <Signup /> } />
@@ -216,7 +216,7 @@ const Menu = (props) => {
         )}
       </div>
       {
-        props.userRole === "ADMIN" &&
+        props.userRole === "ADMIN" && props.accessToken !== undefined &&
         <button type="button" className="new-menu-button" onClick={() => {
           props.location.pathname == "/menu-change" ? props.navigate("/menu-change", {replace: true}) : props.navigate("/menu-change");
           toggleMenu && toggleMenu();
