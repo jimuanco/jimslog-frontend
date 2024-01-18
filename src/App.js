@@ -7,9 +7,9 @@ import Edit from './views/EditView';
 import Signup from './views/SignupView';
 import { cloneElement, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import LoginModal from './components/LoginModal';
 import { Mobile, PC } from './components/ResponsiveConfig';
 import MenuChnage from './views/MenuChangeView';
+import Login from './views/LoginView';
 
 function App() {
   console.log("렌더링됐어용")
@@ -17,7 +17,6 @@ function App() {
   const JWT_EXPIRY_TIME = 30 * 60 * 1000;
 
   const navigate = useNavigate();
-  const [modal, setModal] = useState(false);
   const [accessToken, setAccessToken] = useState();
   const [userRole, setUserRole] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -90,8 +89,6 @@ function App() {
 
   return (
     <div className="App">
-      { modal && <LoginModal setModal={setModal} setAccessToken={setAccessToken} refresh={refresh} setUserRole={setUserRole} /> }
-      
       <header className="header" style={{display: isWritePage && "none"}}>
         <div className="header-content">
           <h1 className="header-title" onClick={() => {
@@ -106,7 +103,7 @@ function App() {
       
       <Mobile>
         <SideBar width={280} isWritePage={isWritePage}>
-          <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} userRole={userRole} setUserRole={setUserRole} menus={menus} navigate={navigate} location={location} totalPostCount={totalPostCount} setPostPageTitle={setPostPageTitle} setCountPerMenu={setCountPerMenu} />
+          <Menu isLoading={isLoading} accessToken={accessToken} setAccessToken={setAccessToken} userRole={userRole} setUserRole={setUserRole} menus={menus} navigate={navigate} location={location} totalPostCount={totalPostCount} setPostPageTitle={setPostPageTitle} setCountPerMenu={setCountPerMenu} />
         </SideBar>
       </Mobile>
 
@@ -114,7 +111,7 @@ function App() {
         {!isWritePage && 
           <PC>
             <nav className="main-menu-pc">
-              <Menu isLoading={isLoading} accessToken={accessToken} setModal={setModal} setAccessToken={setAccessToken} userRole={userRole} setUserRole={setUserRole} menus={menus} navigate={navigate} location={location} totalPostCount={totalPostCount} setPostPageTitle={setPostPageTitle} setCountPerMenu={setCountPerMenu} />
+              <Menu isLoading={isLoading} accessToken={accessToken} setAccessToken={setAccessToken} userRole={userRole} setUserRole={setUserRole} menus={menus} navigate={navigate} location={location} totalPostCount={totalPostCount} setPostPageTitle={setPostPageTitle} setCountPerMenu={setCountPerMenu} />
             </nav>
           </PC>
         }
@@ -127,6 +124,7 @@ function App() {
             <Route path="/edit/:postId" element={ <Edit accessToken={accessToken} isPcScreen={isPcScreen} menus={menus} /> } />
             <Route path="/menu-change" element={ <MenuChnage menus={menus} /> } />
             
+            <Route path="/login" element={<Login setAccessToken={setAccessToken} refresh={refresh} setUserRole={setUserRole} />} />
             <Route path="/signup" element={ <Signup /> } />
           </Routes>
         </article>
@@ -224,7 +222,7 @@ const Menu = (props) => {
           toggleMenu && toggleMenu();
         }}></button>
       }
-      {props.isLoading ? null : props.accessToken == null ? <LoginBtn setModal={props.setModal} toggleMenu={toggleMenu} /> : <LogoutBtn setAccessToken={props.setAccessToken} setUserRole={props.setUserRole} />}
+      {props.accessToken !== undefined && <LogoutBtn setAccessToken={props.setAccessToken} setUserRole={props.setUserRole} />}
     </div>
   )
 }
@@ -258,17 +256,6 @@ const logout = (setUserRole) => {
     .then(() => {
       setUserRole();
     })
-}
-
-const LoginBtn = (props) => {
-  return (
-    <button className="login-button" onClick={() => {
-      props.toggleMenu && props.toggleMenu();
-      props.setModal(true);
-    }}>
-      로그인
-    </button>
-  )
 }
 
 const LogoutBtn = (props) => {
