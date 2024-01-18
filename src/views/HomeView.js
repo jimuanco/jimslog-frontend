@@ -73,6 +73,7 @@ const Home = (props) => {
                   <div className="post-title">
                     <h3 ref={(el) => postTitleRefs.current[index] = el}>{post.title}</h3>
                   </div>
+                  <span className="post-date">{new Date(post.createdDateTime).toLocaleDateString()}</span>
                   <p className="post-content">
                     {post.content.replace(/\!\[(.*?)\]\((.*?)\)/g, '').replace(/<span[^>]*>(.*?)<\/span>/g, '$1')}
                   </p>
