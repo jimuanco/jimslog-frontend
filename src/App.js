@@ -189,6 +189,7 @@ const Menu = (props) => {
         location.pathname == "/" ? navigate("/", {replace: true}) : navigate("/");
         props.setPostPageTitle(`전체글(${props.totalPostCount})`);
         props.setCountPerMenu(props.totalPostCount);
+        toggleMenu && toggleMenu();
       }}>전체보기({props.totalPostCount})</h1>
       <div className="main-menu-lists">
         {props.menus.length > 0 && props.menus.map((menu, mainIndex) => 
@@ -197,6 +198,7 @@ const Menu = (props) => {
               location.pathname === `/menu/${menu.id}` ? navigate(`/menu/${menu.id}`, {replace: true}) : navigate(`/menu/${menu.id}`);
               props.setPostPageTitle(`${menu.name}(${menu.postsCount})`);
               props.setCountPerMenu(menu.postsCount);
+              toggleMenu && toggleMenu();
             }}>{`${menu.name}(${menu.postsCount})`}</h2>
             <div className="sub-menu-lists">
               <ul>
@@ -207,6 +209,7 @@ const Menu = (props) => {
                       location.pathname === `/menu/${menu.id}/${subMenu.id}` ? navigate(`/menu/${menu.id}/${subMenu.id}`, {replace: true}) : navigate(`/menu/${menu.id}/${subMenu.id}`);
                       props.setPostPageTitle(`${subMenu.name}(${subMenu.postsCount})`);
                       props.setCountPerMenu(subMenu.postsCount);
+                      toggleMenu && toggleMenu();
                     }} >{`${subMenu.name}(${subMenu.postsCount})`}</li>
                   )
                 }
