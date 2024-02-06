@@ -13,15 +13,20 @@ const Write = (props) => {
   const [post, setPost] = useState({post:"", content:""});
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+  const [postImageUrls, setPostImageUrls] = useState([]);
   const cursorPosition = useRef(0);
   const [selectorModal, setSelectorModal] = useState(false);
   const selectedMenu = useRef(0);
 
-  const write = (menuId) => {
+  console.log(postImageUrls);
+
+  const write = (menuId, uploadImageUrls, deleteImageUrls) => {
     axios.post("/api/posts", {
       title: post.title,
       content: post.content,
-      menuId: menuId
+      menuId: menuId,
+      uploadImageUrls: uploadImageUrls,
+      deleteImageUrls: deleteImageUrls
     }, {headers: {Authorization: `Bearer ${props.accessToken}`}})
       .then(() => {
         navigate("/", {replace: true});
@@ -39,7 +44,8 @@ const Write = (props) => {
       .then((response) => {
         const contentBeforeCursor = post.content.substring(0, cursorPosition.current);
         const contentAfterCursor = post.content.substring(cursorPosition.current);
-        setPost({...post, content: contentBeforeCursor + `\n![image](${response.data.data})\n` + contentAfterCursor});  
+        setPost({...post, content: contentBeforeCursor + `\n![image](${response.data.data})\n` + contentAfterCursor});
+        setPostImageUrls([...postImageUrls, response.data.data]);
       });
     fileInputRef.current.value = null;
   }
@@ -116,7 +122,7 @@ const Write = (props) => {
         </div>
       </div>
       {
-        selectorModal && <MenuSelectorModal setSelectorModal={setSelectorModal} menus={props.menus} handleMenuChange={handleMenuChange} selectedMenu={selectedMenu} write={write} />
+        selectorModal && <MenuSelectorModal setSelectorModal={setSelectorModal} menus={props.menus} handleMenuChange={handleMenuChange} selectedMenu={selectedMenu} write={write} content={post.content} postImageUrls={postImageUrls}/>
       }
     </div>
   )
