@@ -22,7 +22,12 @@ const MenuSelectorModal = (props) => {
     }
     
     const finalPostImageUrls = extractImageUrls(props.content);
-    const deleteImageUrls = props.postImageUrls.filter(url => !finalPostImageUrls.includes(url));
+    let deleteImageUrls;
+    if(props.newPostImageUrls) {
+      deleteImageUrls = props.postImageUrls.concat(props.newPostImageUrls).filter(url => !finalPostImageUrls.includes(url));
+    } else {
+      deleteImageUrls = props.postImageUrls.filter(url => !finalPostImageUrls.includes(url));
+    }
 
     props.write(props.selectedMenu.current, finalPostImageUrls, deleteImageUrls);
   }

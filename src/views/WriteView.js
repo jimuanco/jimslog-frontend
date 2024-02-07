@@ -18,8 +18,6 @@ const Write = (props) => {
   const [selectorModal, setSelectorModal] = useState(false);
   const selectedMenu = useRef(0);
 
-  console.log(postImageUrls);
-
   const write = (menuId, uploadImageUrls, deleteImageUrls) => {
     axios.post("/api/posts", {
       title: post.title,
