@@ -13,15 +13,18 @@ const Write = (props) => {
   const [post, setPost] = useState({post:"", content:""});
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+  const [postImageUrls, setPostImageUrls] = useState([]);
   const cursorPosition = useRef(0);
   const [selectorModal, setSelectorModal] = useState(false);
   const selectedMenu = useRef(0);
 
-  const write = (menuId) => {
+  const write = (menuId, uploadImageUrls, deleteImageUrls) => {
     axios.post("/api/posts", {
       title: post.title,
       content: post.content,
-      menuId: menuId
+      menuId: menuId,
+      uploadImageUrls: uploadImageUrls,
+      deleteImageUrls: deleteImageUrls
     }, {headers: {Authorization: `Bearer ${props.accessToken}`}})
       .then(() => {
         navigate("/", {replace: true});
@@ -30,13 +33,18 @@ const Write = (props) => {
 
   const saveImage = () => {
     const file = fileInputRef.current.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      const contentBeforeCursor = post.content.substring(0, cursorPosition.current);
-      const contentAfterCursor = post.content.substring(cursorPosition.current);
-      setPost({...post, content: contentBeforeCursor + `\n![image](https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=2022111116425800738539a63f16412114122486.jpg&nmt=18)\n` + contentAfterCursor});
-    }
+    const img = new FormData();
+    img.append("postImage", file);
+    axios.post("/api/posts/image", img, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }})
+      .then((response) => {
+        const contentBeforeCursor = post.content.substring(0, cursorPosition.current);
+        const contentAfterCursor = post.content.substring(cursorPosition.current);
+        setPost({...post, content: contentBeforeCursor + `\n![image](${response.data.data})\n` + contentAfterCursor});
+        setPostImageUrls([...postImageUrls, response.data.data]);
+      });
     fileInputRef.current.value = null;
   }
 
@@ -112,7 +120,7 @@ const Write = (props) => {
         </div>
       </div>
       {
-        selectorModal && <MenuSelectorModal setSelectorModal={setSelectorModal} menus={props.menus} handleMenuChange={handleMenuChange} selectedMenu={selectedMenu} write={write} />
+        selectorModal && <MenuSelectorModal setSelectorModal={setSelectorModal} menus={props.menus} handleMenuChange={handleMenuChange} selectedMenu={selectedMenu} write={write} content={post.content} postImageUrls={postImageUrls}/>
       }
     </div>
   )

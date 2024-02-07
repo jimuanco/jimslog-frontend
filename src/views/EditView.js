@@ -10,6 +10,8 @@ const Edit = (props) => {
 
   const {postId} = useParams();
   const [post, setPost] = useState({post:"", content:""});
+  const [postImageUrls, setPostImageUrls] = useState([]);
+  const [newPostImageUrls, setNewPostImageUrls] = useState([]);
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const cursorPosition = useRef(0);
@@ -20,15 +22,30 @@ const Edit = (props) => {
   useEffect(() => {
     axios.get(`/api/posts/${postId}`)
       .then((response) => {
+        setPostImageUrls(extractImageUrls(response.data.data.content));
         setPost(response.data.data);
       });
   },[]);
 
-  const edit = (menuId) => {
+  const extractImageUrls = (text) => {
+    const regex = /!\[.*?\]\((.*?)\)/g;
+    const matches = [];
+    let match;
+    
+    while ((match = regex.exec(text)) !== null) {
+      matches.push(match[1]);
+    }
+  
+    return matches;
+  };
+
+  const edit = (menuId, uploadImageUrls, deleteImageUrls) => {
     axios.patch(`/api/posts/${postId}`, {
       title: post.title,
       content: post.content,
-      menuId: menuId
+      menuId: menuId,
+      uploadImageUrls: uploadImageUrls,
+      deleteImageUrls: deleteImageUrls
     }, {headers: {Authorization: `Bearer ${props.accessToken}`}})
       .then(() => {
         navigate("/", {replace: true});
@@ -37,13 +54,18 @@ const Edit = (props) => {
 
   const saveImage = () => {
     const file = fileInputRef.current.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      const contentBeforeCursor = post.content.substring(0, cursorPosition.current);
-      const contentAfterCursor = post.content.substring(cursorPosition.current);
-      setPost({...post, content: contentBeforeCursor + `\n![image](https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=2022111116425800738539a63f16412114122486.jpg&nmt=18)\n` + contentAfterCursor});
-    }
+    const img = new FormData();
+    img.append("postImage", file);
+    axios.post("/api/posts/image", img, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }})
+      .then((response) => {
+        const contentBeforeCursor = post.content.substring(0, cursorPosition.current);
+        const contentAfterCursor = post.content.substring(cursorPosition.current);
+        setPost({...post, content: contentBeforeCursor + `\n![image](${response.data.data})\n` + contentAfterCursor});
+        setNewPostImageUrls([...newPostImageUrls, response.data.data]);
+      });
     fileInputRef.current.value = null;
   }
 
@@ -119,7 +141,7 @@ const Edit = (props) => {
         </div>
       </div>
       {
-        selectorModal && <MenuSelectorModal setSelectorModal={setSelectorModal} menus={props.menus} handleMenuChange={handleMenuChange} selectedMenu={selectedMenu} write={edit} />
+        selectorModal && <MenuSelectorModal setSelectorModal={setSelectorModal} menus={props.menus} handleMenuChange={handleMenuChange} selectedMenu={selectedMenu} write={edit} content={post.content} postImageUrls={postImageUrls} newPostImageUrls={newPostImageUrls} />
       }
     </div>
   )

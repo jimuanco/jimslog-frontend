@@ -1,5 +1,17 @@
 const MenuSelectorModal = (props) => {
 
+  const extractImageUrls = (text) => {
+    const regex = /!\[.*?\]\((.*?)\)/g;
+    const matches = [];
+    let match;
+    
+    while ((match = regex.exec(text)) !== null) {
+      matches.push(match[1]);
+    }
+  
+    return matches;
+  };
+
   const createPost = () => {
     if(props.selectedMenu.current === 0) {
       if(props.menus[0].children.length === 0) {
@@ -8,7 +20,16 @@ const MenuSelectorModal = (props) => {
         props.selectedMenu.current = props.menus[0].children[0].id;
       }
     }
-    props.write(props.selectedMenu.current);
+    
+    const finalPostImageUrls = extractImageUrls(props.content);
+    let deleteImageUrls;
+    if(props.newPostImageUrls) {
+      deleteImageUrls = props.postImageUrls.concat(props.newPostImageUrls).filter(url => !finalPostImageUrls.includes(url));
+    } else {
+      deleteImageUrls = props.postImageUrls.filter(url => !finalPostImageUrls.includes(url));
+    }
+
+    props.write(props.selectedMenu.current, finalPostImageUrls, deleteImageUrls);
   }
 
   return (

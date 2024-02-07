@@ -37,7 +37,10 @@ const Read = (props) => {
       <h1>{post.title}</h1>
       <div className="read-view-info">
         <strong className="writer">Jim</strong>
-        <span className="post-date">{new Date(post.createdDateTime).toLocaleDateString()}</span>
+        {
+          post.createdDateTime !== undefined &&
+          <span className="post-date">{new Date(post.createdDateTime).toLocaleDateString()}</span>
+        }
         <div className="read-view-buttons">
           {props.userRole === "ADMIN" && <button className="edit-button" type="button" onClick={moveToEdit}>수정</button>}
           {props.userRole === "ADMIN" && <button className="delete-button" type="button" onClick={() => setDeleteModal(true)}>삭제</button>}
