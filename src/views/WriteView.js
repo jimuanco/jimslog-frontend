@@ -37,7 +37,7 @@ const Write = (props) => {
     img.append("postImage", file);
     axios.post("/api/posts/image", img, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'multipart/form-data', Authorization: `Bearer ${props.accessToken}`
       }})
       .then((response) => {
         const contentBeforeCursor = post.content.substring(0, cursorPosition.current);
