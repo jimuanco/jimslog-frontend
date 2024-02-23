@@ -19,7 +19,7 @@ const Write = (props) => {
   const selectedMenu = useRef(0);
 
   const write = (menuId, uploadImageUrls, deleteImageUrls) => {
-    axios.post("/api/posts", {
+    axios.post(process.env.REACT_APP_API_URL + "/posts", {
       title: post.title,
       content: post.content,
       menuId: menuId,
@@ -35,7 +35,7 @@ const Write = (props) => {
     const file = fileInputRef.current.files[0];
     const img = new FormData();
     img.append("postImage", file);
-    axios.post("/api/posts/image", img, {
+    axios.post(process.env.REACT_APP_API_URL + "/posts/image", img, {
       headers: {
         'Content-Type': 'multipart/form-data', Authorization: `Bearer ${props.accessToken}`
       }})

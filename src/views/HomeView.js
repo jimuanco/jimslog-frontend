@@ -35,7 +35,7 @@ const Home = (props) => {
     } else if(mainMenuId !== undefined) {
       menuId = mainMenuId;
     }
-    axios.get(`/api/posts?page=${page}&size=5&menu=${menuId}`)
+    axios.get(process.env.REACT_APP_API_URL + `/posts?page=${page}&size=5&menu=${menuId}`)
       .then((response) => {
         setPosts(response.data.data);
         setPage(page);

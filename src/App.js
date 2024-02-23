@@ -62,7 +62,7 @@ function App() {
   }, []);
 
   const fetchMenus = () => {
-    axios.get("/api/menus")
+    axios.get(process.env.REACT_APP_API_URL + "/menus")
       .then((response) => {
         setMenus(response.data.data);
         if(response.data.count !== undefined && location.pathname === "/") {
@@ -78,7 +78,7 @@ function App() {
   }
 
   const refresh = () => {
-    axios.post("/api/auth/refresh")
+    axios.post(process.env.REACT_APP_API_URL + "/auth/refresh")
       .then((response) => {
         (response.data && response.data.data.role == "ADMIN") && setUserRole("ADMIN");
         response.data && setAccessToken(response.data.data.accessToken);
@@ -255,7 +255,7 @@ const SideBar = ({width, children, isWritePage}) => {
 }
 
 const logout = (setUserRole) => {
-  axios.post("/api/auth/logout")
+  axios.post(process.env.REACT_APP_API_URL + "/auth/logout")
     .then(() => {
       setUserRole();
     })
