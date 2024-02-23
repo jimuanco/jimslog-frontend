@@ -11,7 +11,7 @@ const Read = (props) => {
   const [deleteModal, setDeleteModal] = useState(false);
 
   useEffect(() => {
-    axios.get(process.env.REACT_APP_API_URL + `/posts/${postId}`)
+    axios.get(`/api/posts/${postId}`)
       .then((response) => {
         setPost(response.data.data);
       });
@@ -26,7 +26,7 @@ const Read = (props) => {
   }
 
   const deletePost = () => {
-    axios.delete(process.env.REACT_APP_API_URL + `/posts/${postId}`, {headers: {Authorization: `Bearer ${props.accessToken}`}})
+    axios.delete(`/api/posts/${postId}`, {headers: {Authorization: `Bearer ${props.accessToken}`}})
       .then(() => {
         navigate("/", {replace: true});
       });

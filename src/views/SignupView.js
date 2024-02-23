@@ -11,7 +11,7 @@ const Signup = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const signup = async () => {
-    await axios.post(process.env.REACT_APP_API_URL + "/auth/signup", {
+    await axios.post("/api/auth/signup", {
       name: name.current,
       email: email.current,
       password: password.current

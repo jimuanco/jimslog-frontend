@@ -20,7 +20,7 @@ const Edit = (props) => {
   const selectedMenu = useRef(0);
 
   useEffect(() => {
-    axios.get(process.env.REACT_APP_API_URL + `/posts/${postId}`)
+    axios.get(`/api/posts/${postId}`)
       .then((response) => {
         setPostImageUrls(extractImageUrls(response.data.data.content));
         setPost(response.data.data);
@@ -40,7 +40,7 @@ const Edit = (props) => {
   };
 
   const edit = (menuId, uploadImageUrls, deleteImageUrls) => {
-    axios.patch(process.env.REACT_APP_API_URL + `/posts/${postId}`, {
+    axios.patch(`/api/posts/${postId}`, {
       title: post.title,
       content: post.content,
       menuId: menuId,
@@ -56,7 +56,7 @@ const Edit = (props) => {
     const file = fileInputRef.current.files[0];
     const img = new FormData();
     img.append("postImage", file);
-    axios.post(process.env.REACT_APP_API_URL + "/posts/image", img, {
+    axios.post("/api/posts/image", img, {
       headers: {
         'Content-Type': 'multipart/form-data', Authorization: `Bearer ${props.accessToken}`
       }})
