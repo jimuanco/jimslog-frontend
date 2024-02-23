@@ -1,0 +1,55 @@
+name: Build React App
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout Github Action
+      - uses: actions/checkout@v1
+
+      # npm package cache 사용하기 : https://github.com/actions/cache/blob/main/examples.md#node---npm
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - uses: actions/cache@v3
+        id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+  
+      - name: Create env file
+        run: |
+          touch .env
+          echo "GENERATE_SOURCEMAP=false" >> .env
+          echo REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }} >> .env
+          cat .env
+
+      - name: Npm Install
+        run: npm install
+
+      - name: Npm Build
+        run: npm run build
+
+      # aws user 연결
+      - name: Configure AWS credentials 
+        uses: aws-actions/configure-aws-credentials@v1 
+        with: 
+          aws-access-key-id: ${{ secrets.AWS_S3_FRONT_ACCESS_KEY_ID }} 
+          aws-secret-access-key: ${{ secrets.AWS_S3_FRONT_SECRET_ACCESS_KEY_ID }} 
+          aws-region: ${{ secrets.AWS_REGION_STATIC }}
+
+      # react 빌드한 /build를 s3로 업로드
+      - name: Upload to S3
+        env:
+          BUCKET_NAME: ${{ secrets.AWS_S3_FRONT_BUCKET_NAME}}
+        run: |
+          aws s3 sync \
+            ./build s3://$BUCKET_NAME
