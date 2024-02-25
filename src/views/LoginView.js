@@ -9,10 +9,10 @@ const Login = (props) => {
   const navigate = useNavigate();
   
   const login = () => {
-    axios.post("/api/auth/login", {
+    axios.post(process.env.REACT_APP_API_URL + "/auth/login", {
       email: email.current,
       password: password.current
-    })
+    }, { withCredentials: true })
       .then((response) => {
         props.setAccessToken(response.data.data.accessToken);
         props.setUserRole(response.data.data.role);
