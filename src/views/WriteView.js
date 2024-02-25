@@ -8,8 +8,6 @@ import ReactTextareaAutosize from "react-textarea-autosize";
 import MenuSelectorModal from "../components/MenuSelectorModal";
 
 const Write = (props) => {
-  console.log("tlqkf")
-
   const [post, setPost] = useState({post:"", content:""});
   const navigate = useNavigate();
   const fileInputRef = useRef(null);

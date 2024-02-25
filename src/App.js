@@ -12,8 +12,6 @@ import MenuChnage from './views/MenuChangeView';
 import Login from './views/LoginView';
 
 function App() {
-  console.log("렌더링됐어용")
-
   const JWT_EXPIRY_TIME = 30 * 60 * 1000;
 
   const navigate = useNavigate();
@@ -73,7 +71,6 @@ function App() {
           setCountPerMenu(0);
         }
         location.pathname === "/" && (response.data.count !== undefined ? setPostPageTitle(`전체글(${response.data.count})`) : setPostPageTitle(`전체글(0)`))
-        console.log(response.data.data);
       });
   }
 
