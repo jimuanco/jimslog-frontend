@@ -81,6 +81,9 @@ function App() {
         response.data && setAccessToken(response.data.data.accessToken);
         setTimeout(refresh, JWT_EXPIRY_TIME - 60000);
         setIsLoading(false);
+      })
+      .catch(() => {
+        
       });
   }
 
